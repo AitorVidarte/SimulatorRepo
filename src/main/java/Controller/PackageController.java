@@ -24,12 +24,13 @@ public class PackageController extends Thread {
 		
 		asignarPaqueteAEstacion();
 		asignarPaquetesATrenes();
+		
 		while (true) {
 			
-			if (mirarPaquetesEnBaseDeDatos()){
-				asignarPaqueteAEstacion();
-				asignarPaquetesATrenes();
+			if(mirarPaquetesEnBaseDeDatos()) {
+				System.out.println("Tiene que asignar paquete a tren");
 			}
+			
 			
 			try {
 				Thread.sleep(10000);
@@ -44,7 +45,7 @@ public class PackageController extends Thread {
 		// TODO Auto-generated method stub
 		boolean change = false;
 		PackageDAO packageDao = new PackageDAO();
-		List<Package> paquetes = packageDao.packageListInBBDD();
+		List<Package> paquetes = packageDao.toSendPackageListInBBDD();
 		System.out.println("###########################################"+paquetes.size()+"###############################");
 		System.out.println(nPackages);
 		if (nPackages != paquetes.size()){
