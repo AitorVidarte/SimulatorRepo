@@ -33,7 +33,7 @@ public class PackageController extends Thread {
 			
 			
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -46,7 +46,6 @@ public class PackageController extends Thread {
 		boolean change = false;
 		PackageDAO packageDao = new PackageDAO();
 		List<Package> paquetes = packageDao.toSendPackageListInBBDD();
-		System.out.println("###########################################"+paquetes.size()+"###############################");
 		System.out.println(nPackages);
 		if (nPackages != paquetes.size()){
 			System.out.println("ok");

@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import DAO.PackageDAO;
 import Modelo.Circuito;
 import Modelo.Rail;
 import Modelo.Station;
@@ -41,13 +42,15 @@ public class TrainThread extends Thread {
 	}
 
 	private void recogerPaquete() {
+	PackageDAO packageDao = new PackageDAO(); 
 	for(Package paquete : train.getPackageList()) {
 	    if (paquete.getOrigin() == train.getStation()) {
 		paquete.setPackageState(1);
 		train.getStation().getSendPackageList().remove(paquete);
+		packageDao.edit(paquete, paquete.getPackageID());
 		System.out.println("Paquete recogido!");
 		try {
-		    Thread.sleep(2000);
+		    Thread.sleep(10000);
 		} catch (InterruptedException e) {
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
@@ -57,7 +60,7 @@ public class TrainThread extends Thread {
     }
 
 	private void entregarPaquete() {
-
+		PackageDAO packageDao = new PackageDAO(); 
 		Set<Package> paquetes = train.getPackageList();
 		Package paquete;
 		Iterator<Package> it = paquetes.iterator();
@@ -67,6 +70,8 @@ public class TrainThread extends Thread {
 			paquete = it.next();
 			if (paquete.getDestination() == train.getStation()) {
 				paquete.setPackageState(2);
+				System.out.println(paquete.getPackageID());
+				packageDao.edit(paquete,(paquete.getPackageID()-1));
 				train.getStation().getDeliveredPackageList().add(paquete);
 				it.remove();
 				System.out.println("Paquete entregado!");
