@@ -65,4 +65,21 @@ public class PackageDAO {
 		session.close();
 		return packages;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Package> toSendpackageListInBBDD() {
+		Session session = HibernateUtil.createSessionFactory();
+		session.beginTransaction();
+		List<Package> packages = null;
+		try {
+			packages = (List<Package>) session.createQuery("from Package where packageState = 0").list();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		session.getTransaction().commit();
+		session.close();
+		return packages;
+	}
 }
