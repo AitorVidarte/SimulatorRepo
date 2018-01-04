@@ -14,6 +14,7 @@ public class TrainThread extends Thread {
 
 	Train train;
 	Circuito circuito;
+	String Aitor;
 
 	public TrainThread(Train train, Circuito circuito) {
 		this.train = train;
