@@ -137,7 +137,6 @@ public class TrainThread extends Thread {
 		StationDAO stationDao = new StationDAO();
 
 		try {
-			Thread.sleep(1000);
 			train.setStation(rail.getNextStation());
 			soltarRail(rail);
 			station = train.getStation();
