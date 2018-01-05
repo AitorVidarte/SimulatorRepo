@@ -132,6 +132,9 @@ public class TrainThread extends Thread {
 			trainDao.edit(train, train.getTrainID()-1);
 			stationDao.edit(train.getStation());
 			Thread.sleep(3000);
+			if (station.getStationID() == 4) {
+				train.setOnGoing(false);
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
