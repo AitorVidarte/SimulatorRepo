@@ -2,6 +2,8 @@ package Modelo;
 
 import java.util.ArrayList;
 
+import DAO.RailDAO;
+
 public class Circuito {
 
 	ArrayList<Rail> railes;
@@ -23,6 +25,7 @@ public class Circuito {
 	}
 
 	public synchronized Rail cogerRail(Rail rail) {
+		RailDAO railDao = new RailDAO();
 
 		while (rail.isOccupied()) {
 
@@ -34,13 +37,19 @@ public class Circuito {
 			}
 		}
 		rail.setOccupied(true);
-
+		railDao.edit(rail, rail.getRailID() - 1);
+		System.out.println("cogiendo rail");
 		return rail;
 	}
 
 	public synchronized void soltarRail(Rail rail) {
+
+		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
+		railDao.edit(rail, rail.getRailID() - 1);
+		System.out.println("soltando rail");
 		notify();
+
 	}
 
 	public ArrayList<Station> getEstaciones() {

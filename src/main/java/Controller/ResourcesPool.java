@@ -51,6 +51,7 @@ public class ResourcesPool {
 				if (station.getDescription().equals(train.getStation().getDescription())) {
 					station.aparcarTren(train);
 					train.setStation(station);
+					stationDao.edit(station);
 				}
 			}
 		}
