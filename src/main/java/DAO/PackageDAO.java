@@ -67,7 +67,7 @@ public class PackageDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Package> toSendpackageListInBBDD() {
+	public List<Package> toSendPackageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
 		List<Package> packages = null;
