@@ -44,6 +44,7 @@ public class Train implements Serializable {
 		this.station = station;
 		this.direction = direction;
 		this.packageList = new HashSet<Package>();
+		this.rail = new Rail();
 	}
 
 	public int getTrainID() {

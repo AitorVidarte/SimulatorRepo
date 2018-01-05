@@ -194,4 +194,9 @@ public class Station implements Serializable {
 	public void aparcarTren(Train train) {
 		parks.add(train);
 	}
+
+	public void quitarTren(Train train) {
+		// TODO Auto-generated method stub
+		parks.remove(train);
+	}
 }

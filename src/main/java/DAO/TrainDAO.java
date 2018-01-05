@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import Modelo.Package;
 import Modelo.Train;
 import hibernate.HibernateUtil;
 
@@ -35,6 +36,19 @@ public class TrainDAO {
 		return train;
 	}
 
+	public Train edit(Train train, int id) {
+		Session session = HibernateUtil.createSessionFactory();
+		session.beginTransaction();
+		Train train1 = session.get(Train.class, id);
+		train1 = train;
+		if(train1 != null) {
+			session.update(train1);
+		}
+		session.getTransaction().commit();
+		session.close();
+		return train;
+	}
+	
 	// For generating , executing hibernate select query and returns trains as a
 	// list.
 	@SuppressWarnings("unchecked")
