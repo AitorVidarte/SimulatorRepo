@@ -178,9 +178,9 @@ public class TrainThread extends Thread {
 
 
 	private void soltarRail() {
+		
 		Rail rail = train.getRail();
-		System.out.println("Soltando..."+train.getRail().getRailID());
-		rail.setOccupied(false);
+		circuito.soltarRail(rail);
 		
 //		circuito.soltarRail(train.getRail());
 	}
