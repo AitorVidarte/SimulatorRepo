@@ -42,32 +42,20 @@ public class TrainThread extends Thread {
 	}
 	
 	private void pedirRail() {
-
-		
 		for (Rail rail : circuito.getRailes()) {
-			
 			if (train.getDirection() == 0) {
-		
 				if ((train.getStation().getDescription().equals(rail.getPreviousStation().getDescription()))&&(train.getStation().getNextStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
 					System.out.println("Rail: "+train.getRail().getRailID());
-					//System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
-
 				}
-				
 			} else if (train.getDirection() == 1) {
-				
 				if ((train.getStation().getDescription().equals(rail.getNextStation().getDescription()))&&(train.getStation().getPreviousStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					//System.out.println(rail.getRailID());
-
 				}
 			}
-
 		}
-
 	}
 
 	private void recogerPaquete() {
@@ -144,6 +132,9 @@ public class TrainThread extends Thread {
 			trainDao.edit(train, train.getTrainID()-1);
 			stationDao.edit(train.getStation());
 			Thread.sleep(3000);
+			if (station.getStationID() == 4) {
+				train.setOnGoing(false);
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
