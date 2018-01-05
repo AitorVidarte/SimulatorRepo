@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import DAO.PackageDAO;
+import DAO.StationDAO;
 import DAO.TrainDAO;
 import Modelo.Circuito;
 import Modelo.Rail;
@@ -33,7 +34,6 @@ public class TrainThread extends Thread {
 				salirEstacion();
 				recorreRail();
 				entrarEstacion();
-				soltarRail();
 				//entregarPaquete();
 				//recogerPaquete();
 			}
@@ -58,7 +58,7 @@ public class TrainThread extends Thread {
 				
 			} else if (train.getDirection() == 1) {
 				
-				if ((train.getStation().getDescription().equals(rail.getPreviousStation().getDescription()))&&(train.getStation().getNextStation().getDescription().equals(rail.getNextStation().getDescription()))) {
+				if ((train.getStation().getDescription().equals(rail.getNextStation().getDescription()))&&(train.getStation().getPreviousStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
 					//System.out.println(rail.getRailID());
@@ -120,9 +120,11 @@ public class TrainThread extends Thread {
 
 	private void salirEstacion() {
 		
+		StationDAO stationDao = new StationDAO();
 		Station station = train.getStation();
 		System.out.println("Rail: "+train.getRail().getRailID());
 		station.quitarTren(train);
+		stationDao.edit(station);
 		
 		// station.avisarTrenWaitingZone(train);
 	}
@@ -130,15 +132,20 @@ public class TrainThread extends Thread {
 	private void entrarEstacion() {
 
 		Rail rail = train.getRail();
+		Station station = null;
 		TrainDAO trainDao = new TrainDAO();
+		StationDAO stationDao = new StationDAO();
 
 		try {
 			Thread.sleep(1000);
 			train.setStation(rail.getNextStation());
-			System.out.println("\nEl tren:" + train.getTrainID() + " ha entrado en la estacion: "
-					+ train.getStation().getDescription());
+			soltarRail(rail);
+			station = train.getStation();
+			station.aparcarTren(train);
+			System.out.println("\nEl tren:" + train.getTrainID() + " ha entrado en la estacion: "+ train.getStation().getDescription());
 			trainDao.edit(train, train.getTrainID()-1);
-			Thread.sleep(1000);
+			stationDao.edit(train.getStation());
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -177,9 +184,8 @@ public class TrainThread extends Thread {
 
 
 
-	private void soltarRail() {
+	private void soltarRail(Rail rail) {
 		
-		Rail rail = train.getRail();
 		circuito.soltarRail(rail);
 		
 //		circuito.soltarRail(train.getRail());
