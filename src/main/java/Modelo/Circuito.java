@@ -6,7 +6,6 @@ public class Circuito {
 
     ArrayList<Rail> railes;
     ArrayList<Station> estaciones;
-    String aitor;
 
     public Circuito() {
 

@@ -15,7 +15,6 @@ public class TrainThread extends Thread {
 
 	Train train;
 	Circuito circuito;
-	String Aitor;
 
 	public TrainThread(Train train, Circuito circuito) {
 		this.train = train;
@@ -23,19 +22,21 @@ public class TrainThread extends Thread {
 	}
 
 	public void run() {
-
+		
+		System.out.println(train.getTrainID());
+		
+		
 		while (true) {
 
 			if (moverse()) {
 
 				pedirRail();
-				salirEstacion();
-				recorreRail();
-				entrarEstacion();
-				soltarRail();
-				entregarPaquete();
-				recogerPaquete();
-
+//				salirEstacion();
+//				recorreRail();
+//				entrarEstacion();
+//				soltarRail();
+//				entregarPaquete();
+//				recogerPaquete();
 			}
 
 		}
@@ -138,18 +139,7 @@ public class TrainThread extends Thread {
 	}
 
 	private void pedirRail() {
-		// Rail rail;
-		//
-		// if (train.getTrainId()==1){
-		//
-		// rail = circuito.cogerRail(circuito.getRailes().get(0));
-		// train.setUsingRail(rail);
-		// }
-		// if (train.getTrainId()!=1){
-		// rail = circuito.cogerRail(circuito.getRailes().get(7));
-		// train.setUsingRail(rail);
-		// }
-
+		
 		for (Rail rail : circuito.getRailes()) {
 			if (train.getDirection() == 0) {
 				if ((train.getStation() == rail.getPreviousStation())
@@ -157,8 +147,7 @@ public class TrainThread extends Thread {
 
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					System.out
-							.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
+					System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
 
 				}
 			} else {
@@ -182,11 +171,9 @@ public class TrainThread extends Thread {
 	private boolean moverse() {
 		// TODO Auto-generated method stub
 		boolean go = false;
-		if (train.getPackageList().size() != 0) {
+		if (train.isOnGoing()) {
 			go = true;
 			System.out.println("Tren" + train.getTrainID() + " Go!");
-			train.setOnGoing(true);
-		} else {
 			train.setOnGoing(false);
 		}
 		return go;

@@ -18,12 +18,15 @@ public class ResourcesPool {
 	ArrayList<TrainThread> trainThreads;
 	ArrayList<Train> trains;
 	ArrayList<Station> stations;
+	ArrayList<Rail> rails;
 	Circuito circuito;
 	PackageController packageController;
 
 	public ResourcesPool() {
 		stations = new ArrayList<Station>();
 		trains = new ArrayList<Train>();
+		rails = new ArrayList<Rail>();
+		
 		trainThreads = new ArrayList<TrainThread>();
 		circuito = new Circuito();
 
@@ -32,93 +35,23 @@ public class ResourcesPool {
 		launchThreads();
 	}
 
-	public ArrayList<Station> getStations() {
-		return stations;
-	}
-
-	public ArrayList<Train> getTrains() {
-		return trains;
-	}
-
-	public Circuito getCircuito() {
-		return circuito;
-	}
 
 	private void iniciarCircuito() {
-
-		stations.add(new Station(1, 1.1, 1.1, "Station1", 1, 1, 1, 1, null, null));
-		stations.add(new Station(2, 2.1, 2.1, "Station2", 1, 1, 1, 1, null, null));
-		stations.add(new Station(3, 3.1, 3.1, "Station3", 1, 1, 1, 1, null, null));
-		stations.add(new Station(4, 4.1, 4.1, "Station4", 1, 1, 1, 1, null, null));
-		stations.add(new Station(5, 5.1, 5.1, "Station5", 1, 1, 1, 1, null, null));
-		stations.add(new Station(6, 6.1, 6.1, "Station6", 1, 1, 1, 1, null, null));
-
-		trains.add(new Train(1, stations.get(0), RIGHTDIRECTION));
-		trains.add(new Train(2, stations.get(1), RIGHTDIRECTION));
-		trains.add(new Train(3, stations.get(1), RIGHTDIRECTION));
-		trains.add(new Train(4, stations.get(1), LEFTDIRECTION));
-		trains.add(new Train(5, stations.get(1), LEFTDIRECTION));
-		trains.add(new Train(6, stations.get(5), LEFTDIRECTION));
+		
+		StationDAO stationDao = new StationDAO();
+		TrainDAO trainDao = new TrainDAO();
+		RailDAO railDao = new RailDAO();
+		
+		
+		this.stations = (ArrayList<Station>) stationDao.list();
+		System.out.println(stations.size());
+		this.trains = (ArrayList<Train>) trainDao.list();
+		System.out.println(trains.size());
+		this.rails = (ArrayList<Rail>) railDao.list();
+		System.out.println(rails.size());
 		
 		circuito.setEstaciones(stations);
-
-		circuito.getRailes().add(new Rail(1, stations.get(0), stations.get(1), false));
-		circuito.getRailes().add(new Rail(2, stations.get(1), stations.get(2), false));
-		circuito.getRailes().add(new Rail(3, stations.get(2), stations.get(3), false));
-		circuito.getRailes().add(new Rail(4, stations.get(3), stations.get(4), false));
-		circuito.getRailes().add(new Rail(5, stations.get(4), stations.get(5), false));
-		circuito.getRailes().add(new Rail(6, stations.get(5), stations.get(0), false));
-
-		circuito.getRailes().add(new Rail(7, stations.get(1), stations.get(0), false));
-		circuito.getRailes().add(new Rail(8, stations.get(0), stations.get(5), false));
-		circuito.getRailes().add(new Rail(9, stations.get(5), stations.get(4), false));
-		circuito.getRailes().add(new Rail(10, stations.get(4), stations.get(3), false));
-		circuito.getRailes().add(new Rail(11, stations.get(3), stations.get(2), false));
-		circuito.getRailes().add(new Rail(12, stations.get(2), stations.get(1), false));
-
-		StationDAO stationDAO = new StationDAO();
-		for (Station station : stations) {
-			stationDAO.add(station);
-		}
-
-		TrainDAO trainDAO = new TrainDAO();
-		for (Train train : trains) {
-			trainDAO.add(train);
-		}
-		
-		RailDAO railDAO = new RailDAO();
-		for (Rail rail : circuito.getRailes()) {
-			railDAO.add(rail);
-		}
-		
-		stations.get(0).setNextStation(stations.get(1));
-		stations.get(0).setPreviousStation(stations.get(5));
-
-		stations.get(1).setNextStation(stations.get(2));
-		stations.get(1).setPreviousStation(stations.get(0));
-
-		stations.get(2).setNextStation(stations.get(3));
-		stations.get(2).setPreviousStation(stations.get(1));
-
-		stations.get(3).setNextStation(stations.get(4));
-		stations.get(3).setPreviousStation(stations.get(2));
-
-		stations.get(4).setNextStation(stations.get(5));
-		stations.get(4).setPreviousStation(stations.get(3));
-
-		stations.get(5).setNextStation(stations.get(0));
-		stations.get(5).setPreviousStation(stations.get(4));
-		
-		stations.get(0).getParks().add(trains.get(0));
-		stations.get(1).getParks().add(trains.get(1));
-		stations.get(1).getParks().add(trains.get(2));
-		stations.get(1).getParks().add(trains.get(3));
-		stations.get(2).getParks().add(trains.get(4));
-		stations.get(2).getParks().add(trains.get(5));
-
-		for (Station station : stations) {
-			stationDAO.edit(station);
-		}
+		circuito.setRailes(rails);
 	}
 
 	public ArrayList<Train> getTrenesEnUnaDireccion(int direccion) {
@@ -142,11 +75,24 @@ public class ResourcesPool {
 	}
 
 	public void launchThreads() {
-		packageController = new PackageController(this);
-		packageController.start();
+//		packageController = new PackageController(this);
+//		packageController.start();
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			trainThreads.add(new TrainThread(trains.get(i), circuito));
 			trainThreads.get(i).start();
 		}
+	}
+	
+
+	public ArrayList<Station> getStations() {
+		return stations;
+	}
+
+	public ArrayList<Train> getTrains() {
+		return trains;
+	}
+
+	public Circuito getCircuito() {
+		return circuito;
 	}
 }
