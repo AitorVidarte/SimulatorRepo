@@ -31,7 +31,6 @@ public class ResourcesPool {
 		circuito = new Circuito();
 
 		iniciarCircuito();
-
 		launchThreads();
 	}
 

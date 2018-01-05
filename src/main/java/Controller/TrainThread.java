@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import DAO.PackageDAO;
+import DAO.TrainDAO;
 import Modelo.Circuito;
 import Modelo.Rail;
 import Modelo.Station;
@@ -30,11 +31,11 @@ public class TrainThread extends Thread {
 
 				pedirRail();
 				salirEstacion();
-				// recorreRail();
-				// entrarEstacion();
-				// soltarRail();
-				// entregarPaquete();
-				// recogerPaquete();
+				recorreRail();
+				entrarEstacion();
+				soltarRail();
+				//entregarPaquete();
+				//recogerPaquete();
 			}
 
 		}
@@ -47,19 +48,20 @@ public class TrainThread extends Thread {
 			
 			if (train.getDirection() == 0) {
 		
-				if (train.getStation().getDescription().equals(rail.getPreviousStation().getDescription())) {
+				if ((train.getStation().getDescription().equals(rail.getPreviousStation().getDescription()))&&(train.getStation().getNextStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
+					System.out.println("Rail: "+train.getRail().getRailID());
+					//System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
 
 				}
 				
-			} else {
+			} else if (train.getDirection() == 1) {
 				
-				if (train.getStation().getDescription().equals(rail.getPreviousStation().getDescription())) {
+				if ((train.getStation().getDescription().equals(rail.getPreviousStation().getDescription()))&&(train.getStation().getNextStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					System.out.println(rail.getRailID());
+					//System.out.println(rail.getRailID());
 
 				}
 			}
@@ -119,19 +121,23 @@ public class TrainThread extends Thread {
 	private void salirEstacion() {
 		
 		Station station = train.getStation();
-		System.out.println(station.getParks().size());
+		System.out.println("Rail: "+train.getRail().getRailID());
+		station.quitarTren(train);
+		
 		// station.avisarTrenWaitingZone(train);
 	}
 
 	private void entrarEstacion() {
 
 		Rail rail = train.getRail();
+		TrainDAO trainDao = new TrainDAO();
 
 		try {
 			Thread.sleep(1000);
 			train.setStation(rail.getNextStation());
 			System.out.println("\nEl tren:" + train.getTrainID() + " ha entrado en la estacion: "
 					+ train.getStation().getDescription());
+			trainDao.edit(train, train.getTrainID()-1);
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -141,7 +147,9 @@ public class TrainThread extends Thread {
 
 	private void recorreRail() {
 		// TODO Auto-generated method stub
+		System.out.println("Rail: "+train.getRail().getRailID());
 		System.out.println("Recorriendo: ");
+		
 		for (int i = 0; i <= 100; i += 10) {
 			if (i == 90) {
 				try {
@@ -163,12 +171,18 @@ public class TrainThread extends Thread {
 			}
 
 		}
+		System.out.println("Rail: "+train.getRail().getRailID());
+		
 	}
 
 
 
 	private void soltarRail() {
-		circuito.soltarRail(train.getRail());
+		
+		Rail rail = train.getRail();
+		circuito.soltarRail(rail);
+		
+//		circuito.soltarRail(train.getRail());
 	}
 
 	private boolean moverse() {
@@ -176,8 +190,8 @@ public class TrainThread extends Thread {
 		boolean go = false;
 		if (train.isOnGoing()) {
 			go = true;
-			System.out.println("Tren" + train.getTrainID() + " Go!");
-			train.setOnGoing(false);
+			//System.out.println("Tren" + train.getTrainID() + " Go!");
+			//train.setOnGoing(false);
 		}
 		return go;
 	}
