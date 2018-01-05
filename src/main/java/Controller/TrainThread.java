@@ -50,7 +50,7 @@ public class TrainThread extends Thread {
 				if (train.getStation().getDescription().equals(rail.getPreviousStation().getDescription())) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
+					//System.out.println("El tren:" + train.getTrainID() + " esta utilizando el rail: " + rail.getRailID());
 
 				}
 				
@@ -59,7 +59,7 @@ public class TrainThread extends Thread {
 				if (train.getStation().getDescription().equals(rail.getPreviousStation().getDescription())) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-					System.out.println(rail.getRailID());
+					//System.out.println(rail.getRailID());
 
 				}
 			}
@@ -119,7 +119,7 @@ public class TrainThread extends Thread {
 	private void salirEstacion() {
 		
 		Station station = train.getStation();
-		System.out.println(station.getParks().size());
+		//System.out.println(station.getParks().size());
 		// station.avisarTrenWaitingZone(train);
 	}
 
@@ -176,7 +176,7 @@ public class TrainThread extends Thread {
 		boolean go = false;
 		if (train.isOnGoing()) {
 			go = true;
-			System.out.println("Tren" + train.getTrainID() + " Go!");
+			//System.out.println("Tren" + train.getTrainID() + " Go!");
 			train.setOnGoing(false);
 		}
 		return go;
