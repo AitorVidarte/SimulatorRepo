@@ -36,10 +36,10 @@ public class RailDAO {
     public Rail edit(Rail rail, int id) {
 	Session session = HibernateUtil.createSessionFactory();
 	session.beginTransaction();
-	Rail paquete1 = session.get(Rail.class, id);
-	paquete1 = rail;
-	if (paquete1 != null) {
-	    session.update(paquete1);
+	Rail rail1 = session.get(Rail.class, id);
+	rail1 = rail;
+	if (rail1 != null) {
+	    session.update(rail1);
 	}
 	session.getTransaction().commit();
 	session.close();
