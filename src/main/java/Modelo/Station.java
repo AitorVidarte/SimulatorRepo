@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import Modelo.Train;
 
 @SuppressWarnings("serial")
@@ -35,12 +38,15 @@ public class Station implements Serializable {
 	private int nextEntrySwitch;
 	private int previousEntrySwitch;
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Train> parks = new ArrayList<Train>();
 	private double coordinatesLat;
 	private double coordinatesLng;
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Package> sendPackageList = new ArrayList<Package>();
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Package> deliveredPackageList = new ArrayList<Package>();
 
 	public Station() {
@@ -183,5 +189,12 @@ public class Station implements Serializable {
 			}
 		}
 		return pos;
+	}
+
+	public void aparcarTren(Train train) {
+		
+		parks.add(train);
+		System.out.println(parks.size());
+		
 	}
 }

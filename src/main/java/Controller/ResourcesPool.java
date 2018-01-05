@@ -44,11 +44,19 @@ public class ResourcesPool {
 		
 		
 		this.stations = (ArrayList<Station>) stationDao.list();
-		System.out.println(stations.size());
+		
 		this.trains = (ArrayList<Train>) trainDao.list();
-		System.out.println(trains.size());
+		
+		for (Station station: stations) {
+			for (Train train : trains) {
+				if (station.getDescription().equals(train.getStation().getDescription())) {
+					station.aparcarTren(train);
+					train.setStation(station);
+				}
+			}
+		}
+		
 		this.rails = (ArrayList<Rail>) railDao.list();
-		System.out.println(rails.size());
 		
 		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);
