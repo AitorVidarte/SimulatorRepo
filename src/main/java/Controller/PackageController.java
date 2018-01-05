@@ -21,10 +21,10 @@ public class PackageController extends Thread {
 	}
 
 	public void run() {
-		
-		asignarPaqueteAEstacion();
-		asignarPaquetesATrenes();
-		
+
+//		asignarPaqueteAEstacion();
+//		asignarPaquetesATrenes();
+
 		while (true) {
 			
 			if(mirarPaquetesEnBaseDeDatos()) {
