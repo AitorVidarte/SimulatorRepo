@@ -137,12 +137,10 @@ public class TrainThread extends Thread {
 		StationDAO stationDao = new StationDAO();
 
 		try {
-			Thread.sleep(1000);
 			train.setStation(rail.getNextStation());
 			soltarRail(rail);
 			station = train.getStation();
 			station.aparcarTren(train);
-			System.out.println("\nEl tren:" + train.getTrainID() + " ha entrado en la estacion: "+ train.getStation().getDescription());
 			trainDao.edit(train, train.getTrainID()-1);
 			stationDao.edit(train.getStation());
 			Thread.sleep(3000);
