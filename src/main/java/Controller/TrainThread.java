@@ -27,12 +27,12 @@ public class TrainThread extends Thread {
 		while (true) {
 
 			if (moverse()) {
-				System.out.println("entra!");
+				recogerPaquete();
 				pedirRail();
 				salirEstacion();
 				recorreRail();
 				entrarEstacion();
-				recogerPaquete();
+//				recogerPaquete();
 				// entregarPaquete();
 			}
 
