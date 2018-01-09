@@ -25,22 +25,22 @@ public class PackageController extends Thread {
 	}
 
 	public void run() {
-
-		while (true) {
-
-			if (mirarPaquetesEnBaseDeDatos()) {
-				listaPaquetes = cogerPaqutes();
-				asignarPaquetesAEstacion();
-//				asignarPaquetesATrenes();
-				ponerTrenEnMarcha();
-			}
-
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		ponerTrenEnMarcha();
+//		while (true) {
+//			ponerTrenEnMarcha();
+//			if (mirarPaquetesEnBaseDeDatos()) {
+//				listaPaquetes = cogerPaqutes();
+//				asignarPaquetesAEstacion();
+////				asignarPaquetesATrenes();
+//				ponerTrenEnMarcha();
+//			}
+//
+//			try {
+//				Thread.sleep(3000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	private void asignarPaquetesAEstacion() {
@@ -129,9 +129,11 @@ public class PackageController extends Thread {
 	}
 	
 	private void ponerTrenEnMarcha() {
-		ArrayList<TrainThread> trainThreads;
-		trainThreads = resourcePool.getTrainThreads();
-		trainThreads.get(0).ponerEnMarcha();
+		resourcePool.ponThreadenMarcha(1);
+		
+//		ArrayList<TrainThread> trainThreads;
+//		trainThreads = resourcePool.getTrainThreads();
+//		trainThreads.get(0).ponerEnMarcha();
 		
 		
 		

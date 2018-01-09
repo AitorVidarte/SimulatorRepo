@@ -67,12 +67,20 @@ public class TrainThread extends Thread {
 	}
 
 	public void ponerEnMarcha() {
-		train.setOnGoing(true);
+		this.getTrain().setOnGoing(true);
 		System.out.println("hilo!" + train.isOnGoing());
 	}
 
 	private void recogerPaquete() {
 		PackageDAO packageDao = new PackageDAO();
+		
+		try {
+			System.out.println("Recogiendo paquetes...");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (Package paquete : train.getStation().getSendPackageList()) {
 			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
