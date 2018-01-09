@@ -26,6 +26,7 @@ public class ResourcesPool {
 	PackageController packageController;
 
 	public ResourcesPool() {
+		
 		stations = new ArrayList<Station>();
 		trains = new ArrayList<Train>();
 		rails = new ArrayList<Rail>();
@@ -34,8 +35,15 @@ public class ResourcesPool {
 		trainThreads = new ArrayList<TrainThread>();
 		circuito = new Circuito();
 
-		iniciarCircuito();
-		// launchThreads();
+		iniciarCircuito(); //leyendo los datos de la base de datos y creando objetos.
+		asignarPaquetesAEstaciones(); //asignados los objetos paquete leidos de la base de datos a los objetos estacion.
+		createThreads();// creando los hilos tipo Tren pasandole el tren y el circuito.
+		
+		//launchThreads();
+		//asignarPaquetesAEstacionesYtrenes();
+		
+		
+		
 	}
 
 	private void iniciarCircuito() {
@@ -47,10 +55,9 @@ public class ResourcesPool {
 
 		this.stations = (ArrayList<Station>) stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
-		this.trains = (ArrayList<Train>) trainDao.list();
-
 		
-
+		this.trains = (ArrayList<Train>) trainDao.list();
+		
 		for (Station station : stations) {
 			for (Train train : trains) {
 				if (station.getDescription().equals(train.getStation().getDescription())) {
@@ -60,34 +67,83 @@ public class ResourcesPool {
 				}
 			}
 		}
+		
 
 		this.rails = (ArrayList<Rail>) railDao.list();
-
+		
 		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);
-		
-		asignarPaquetesAEstaciones();
+
 	}
 
-	private void asignarPaquetesAEstaciones() {
-		Station station = null;
-		Train train = null;
-		for (Package pack : packages) {
-			System.out.println(pack.getPackageState());
+	private void asignarPaquetesAEstacionesYtrenes() {
 
-			if (pack.getPackageState() == 0) {
-				station = pack.getOrigin();
-				station.addNewPackageToSend(pack);
-			} else if (pack.getPackageState() == 2) {
-				station = pack.getDestination();
-				station.addDeliveredPackageList(pack);
-			} else {
-				train = pack.getTakeTrain();
-				train.addPackageList(pack);
-			}
+//		Station station = null;
+//		Train train = null;
+//		for (Package pack : packages) {
+//
+//			if (pack.getPackageState() == 0) {
+//
+//				station = pack.getOrigin();
+//				for (Station stat : stations) {
+//					if (stat.getStationID() == station.getStationID()) {
+//						stat.addNewPackageToSend(pack);
+//					}
+//				}
+//			} else if (pack.getPackageState() == 2) {
+//				station = pack.getDestination();
+//				for (Station stat : stations) {
+//					if (stat.getStationID() == station.getStationID()) {
+//						stat.addDeliveredPackageList(pack);
+//					}
+//				}
+//			} else {
+//				train = pack.getTakeTrain();
+//				for (TrainThread trains : trainThreads) {
+//					if (train.getTrainID() == trains.getTrain().getTrainID()) {
+//						trains.getTrain().addPackageList(pack);
+//					}
+//				}
+//				train.addPackageList(pack);
+//			}
 
 		}
+		
+		private void asignarPaquetesAEstaciones() {
 
+			Station station = null;
+			Train train = null;
+			for (Package pack : packages) {
+
+				if (pack.getPackageState() == 0) {
+
+					station = pack.getOrigin();
+					for (Station stat : stations) {
+						if (stat.getStationID() == station.getStationID()) {
+							stat.addNewPackageToSend(pack);
+						}
+					}
+				} else if (pack.getPackageState() == 2) {
+					station = pack.getDestination();
+					for (Station stat : stations) {
+						if (stat.getStationID() == station.getStationID()) {
+							stat.addDeliveredPackageList(pack);
+						}
+					}
+				} 
+				
+			}	
+		circuito.setEstaciones(stations);
+		for (Station stat : stations) {
+			System.out.println("Estacion: " + stat.getDescription() + " tiene " + stat.getSendPackageList().size()
+					+ " para enviar!");
+			System.out.println("Estacion: " + stat.getDescription() + " tiene " + stat.getDeliveredPackageList().size()
+					+ " entregados!");
+		}
+		
+		for (TrainThread trains : trainThreads) {
+			System.out.println("El tren "+trains.getTrain().getTrainID()+" tiene "+trains.getTrain().getPackageList().size()+" paquetes!");
+		}
 	}
 
 	public ArrayList<TrainThread> getTrenesEnUnaDireccion(int direccion) {
@@ -110,12 +166,19 @@ public class ResourcesPool {
 		return trainsDirection;
 	}
 
-	public void launchThreads() {
+	public void createThreads() {
 		// packageController = new PackageController(this);
-		// packageController.start();
-
 		for (int i = 0; i < TRAINNUMBER; i++) {
+			System.out.println("El Tren:"+trains.get(i).getTrainID()+" esta en la estacion: " +trains.get(i).getStation().getDescription()+""
+					+ "y la estacion tiene "+ +trains.get(i).getStation().getSendPackageList().size()+" paquetes para recoger!");
 			trainThreads.add(new TrainThread(trains.get(i), circuito));
+		}
+		
+	}
+	
+	public void launchThreads() {
+		// packageController.start();
+		for (int i = 0; i < TRAINNUMBER; i++) {
 			trainThreads.get(i).start();
 		}
 	}
