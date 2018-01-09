@@ -78,6 +78,7 @@ public class TrainThread extends Thread {
 		for (Package paquete : train.getStation().getSendPackageList()) {
 			
 			System.out.println("entraPAQUETES!");
+			train.setOnGoing(false);
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e1) {
@@ -89,7 +90,6 @@ public class TrainThread extends Thread {
 				packageDao.edit(paquete, paquete.getPackageID());
 				train.getStation().getSendPackageList().remove(paquete);
 				System.out.println("Paquete recogido!");
-				train.setOnGoing(false);
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e) {
