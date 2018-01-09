@@ -28,10 +28,14 @@ public class TrainThread extends Thread {
 
 			if (moverse()) {
 				recogerPaquete();
-				pedirRail();
-				salirEstacion();
-				recorreRail();
-				entrarEstacion();
+				entregarPaquete();
+				if (moverse()) {
+					pedirRail();
+					salirEstacion();
+					recorreRail();
+					entrarEstacion();
+				}
+				
 //				recogerPaquete();
 				// entregarPaquete();
 			}
@@ -67,40 +71,48 @@ public class TrainThread extends Thread {
 	}
 
 	private void recogerPaquete() {
-		System.out.println("entra!");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
 		PackageDAO packageDao = new PackageDAO();
+		
 		for (Package paquete : train.getStation().getSendPackageList()) {
 			
-			System.out.println("entraPAQUETES!");
-			train.setOnGoing(false);
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			if (paquete.getTakeTrain() == train) {
+//			System.out.println("entraPAQUETES!");
+//			System.out.println(paquete.getTakeTrain().getTrainID());
+//			System.out.println(train.getTrainID());
+//			
+//			try {
+//				Thread.sleep(10000);
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+			
+			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
+				System.out.println("entraPAQUETES!");
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				paquete.setPackageState(1);
-				packageDao.edit(paquete, paquete.getPackageID());
-				train.getStation().getSendPackageList().remove(paquete);
+				//packageDao.edit(paquete, paquete.getPackageID());
+				//train.getStation().getSendPackageList().remove(paquete);
+				train.addPackageList(paquete);
 				System.out.println("Paquete recogido!");
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
+		System.out.println("El tren ha recogido "+ train.getPackageList().size() + " paquetes!");
 	}
 
 	private void entregarPaquete() {
+		
 		PackageDAO packageDao = new PackageDAO();
 		Set<Package> paquetes = train.getPackageList();
 		Package paquete;
@@ -109,7 +121,7 @@ public class TrainThread extends Thread {
 
 		while (it.hasNext()) {
 			paquete = it.next();
-			if (paquete.getDestination() == train.getStation()) {
+			if (paquete.getDestination().getStationID() == train.getStation().getStationID()) {
 				paquete.setPackageState(2);
 				System.out.println(paquete.getPackageID());
 				packageDao.edit(paquete, (paquete.getPackageID() - 1));
@@ -118,7 +130,7 @@ public class TrainThread extends Thread {
 				System.out.println("Paquete entregado!");
 				cont++;
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -127,6 +139,16 @@ public class TrainThread extends Thread {
 		}
 		if (cont == 0) {
 			System.out.println("No hay paquetes a entregar.");
+		}
+		if (train.getPackageList().size() == 0) {
+			System.out.println("PARANDO EL TREN!");
+			this.getTrain().setOnGoing(false);
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -146,6 +168,7 @@ public class TrainThread extends Thread {
 		Rail rail = train.getRail();
 		Station station = null;
 		TrainDAO trainDao = new TrainDAO();
+		
 		StationDAO stationDao = new StationDAO();
 
 		train.setStation(rail.getNextStation());
@@ -160,6 +183,7 @@ public class TrainThread extends Thread {
 	private void recorreRail() {
 		// TODO Auto-generated method stub
 		// System.out.println("Rail: "+train.getRail().getRailID());
+		
 		System.out.println("Recorriendo: ");
 
 		for (int i = 0; i <= 100; i += 10) {
