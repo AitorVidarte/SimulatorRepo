@@ -1,5 +1,6 @@
 package Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import DAO.PackageDAO;
@@ -11,34 +12,57 @@ public class PackageController extends Thread {
 
 	ResourcesPool resourcePool;
 	boolean paqueteCreado = false;
-	
+	List<Package> listaPaquetes;
+
 	@SuppressWarnings("unused")
 	private int nPackages = 0;
-	
 
 	public PackageController(ResourcesPool resourcePool) {
 		this.resourcePool = resourcePool;
+		listaPaquetes = new ArrayList<Package>();
 	}
 
 	public void run() {
 
-//		asignarPaqueteAEstacion();
-//		asignarPaquetesATrenes();
-
 		while (true) {
-			
-			if(mirarPaquetesEnBaseDeDatos()) {
-				System.out.println("Tiene que asignar paquete a tren");
+
+			if (mirarPaquetesEnBaseDeDatos()) {
+				listaPaquetes = cogerPaqutes();
+				asignarPaquetesAEstacion();
+				asignarTrenAPaquetes();
+				asignarPaquetesATrenes();
 			}
-			
-			
+
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void asignarTrenAPaquetes() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void asignarPaquetesAEstacion() {
+		PackageDAO packageDao = new PackageDAO();
+
+		for (Package paquete : listaPaquetes) {
+			paquete.getOrigin().addNewPackageToSend(paquete);
+			paquete.setPackageState(1);
+			packageDao.edit(paquete, paquete.getPackageID() - 1);
+			System.out.println(paquete.getOrigin().getDescription() + " introduce "
+					+ paquete.getOrigin().getSendPackageList().size());
+		}
+
+	}
+
+	private List<Package> cogerPaqutes() {
+		PackageDAO packageDao = new PackageDAO();
+		return packageDao.toSendPackageListInBBDD();
 	}
 
 	private boolean mirarPaquetesEnBaseDeDatos() {
@@ -47,29 +71,14 @@ public class PackageController extends Thread {
 		PackageDAO packageDao = new PackageDAO();
 		List<Package> paquetes = packageDao.toSendPackageListInBBDD();
 		System.out.println(nPackages);
-		if (nPackages != paquetes.size()){
+		if (nPackages != paquetes.size()) {
 			System.out.println("ok");
 			setnPackages(paquetes.size());
-			change=true;
+			change = true;
 		}
-		
 		System.out.println(nPackages);
 		return change;
-		
-	}
 
-	private void asignarPaqueteAEstacion() {
-
-		// int aleatorio = (int) (Math.random()*6);
-		// System.out.println(aleatorio);
-		//
-		// resourcePool.getStations().get(aleatorio).getSendPackageList()
-		// .add(new Package(resourcePool.getStations().get(aleatorio),
-		// resourcePool.getStations().get(1), "PAQUTE1"));
-
-		resourcePool.getStations().get(0).getSendPackageList()
-				.add(new Package(resourcePool.getStations().get(0), resourcePool.getStations().get(1), "PAQUTE1"));
-		
 	}
 
 	private void asignarPaquetesATrenes() {
@@ -79,11 +88,8 @@ public class PackageController extends Thread {
 			for (Package paquete : station.getSendPackageList()) {
 				if (!paquete.isAsignadoTren()) {
 					train = buscarTrenParaPaquete(paquete);
-					System.out.println("El mejor tren para el paquete " + paquete.getDescription() + " es el tren:"
-							+ train.getTrainID());
-					train.getPackageList().add(paquete);
+					paquete.setTakeTrain(train);
 					paquete.setAsignadoTren(true);
-					train.setOnGoing(true);
 					packageDAO.add(paquete);
 				}
 			}
@@ -134,7 +140,7 @@ public class PackageController extends Thread {
 		}
 		return trainMejor;
 	}
-	
+
 	public void setnPackages(int nPackages) {
 		this.nPackages = nPackages;
 	}

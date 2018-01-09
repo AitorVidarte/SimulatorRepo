@@ -34,8 +34,9 @@ public class TrainThread extends Thread {
 				salirEstacion();
 				recorreRail();
 				entrarEstacion();
-				//entregarPaquete();
 				//recogerPaquete();
+				//entregarPaquete();
+				
 			}
 
 		}
@@ -129,12 +130,14 @@ public class TrainThread extends Thread {
 			soltarRail(rail);
 			station = train.getStation();
 			station.aparcarTren(train);
+			System.out.println(train.getTrainID()-1);
 			trainDao.edit(train, train.getTrainID()-1);
+			System.out.println("BLOQUEO!!"+train.getStation().getDescription());
 			stationDao.edit(train.getStation());
 			Thread.sleep(3000);
-			if (station.getStationID() == 4) {
-				train.setOnGoing(false);
-			}
+//			if (station.getStationID() == 4) {
+//				train.setOnGoing(false);
+//			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
