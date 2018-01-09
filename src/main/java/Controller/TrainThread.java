@@ -23,13 +23,10 @@ public class TrainThread extends Thread {
 	}
 
 	public void run() {
-		if (train.getDirection() == 0){
-		System.out.println(train.getTrainID() + " Dir " + train.getDirection());
-		}   
+		
 		while (true) {
-
+			
 			if (moverse()) {
-
 				pedirRail();
 				salirEstacion();
 				recorreRail();
@@ -58,7 +55,12 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	public void  ponerEnMarcha() 
+	{
+		train.setOnGoing(true);
+		System.out.println("hilo!"+train.isOnGoing());
+	}
+	
 	private void recogerPaquete() {
 		PackageDAO packageDao = new PackageDAO();
 		for (Package paquete : train.getPackageList()) {
@@ -186,6 +188,9 @@ public class TrainThread extends Thread {
 	private boolean moverse() {
 		// TODO Auto-generated method stub
 		boolean go = false;
+		if (train.getTrainID() == 1 && train.isOnGoing()) {
+			System.out.println(train.isOnGoing());
+		}
 		if (train.isOnGoing()) {
 			go = true;
 			//System.out.println("Tren" + train.getTrainID() + " Go!");
@@ -193,4 +198,13 @@ public class TrainThread extends Thread {
 		}
 		return go;
 	}
+
+	public Train getTrain() {
+		return train;
+	}
+
+	public void setTrain(Train train) {
+		this.train = train;
+	}
+
 }

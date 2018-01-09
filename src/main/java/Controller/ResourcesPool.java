@@ -62,21 +62,21 @@ public class ResourcesPool {
 		circuito.setRailes(rails);
 	}
 
-	public ArrayList<Train> getTrenesEnUnaDireccion(int direccion) {
-		ArrayList<Train> trainsDirection = new ArrayList<Train>();
-		for (Train train : trains) {
-			if (train.getDirection() == direccion) {
-				trainsDirection.add(train);
+	public ArrayList<TrainThread> getTrenesEnUnaDireccion(int direccion) {
+		ArrayList<TrainThread> trainsDirection = new ArrayList<TrainThread>();
+		for (TrainThread trainThread : trainThreads) {
+			if (trainThread.getTrain().getDirection() == direccion) {
+				trainsDirection.add(trainThread);
 			}
 		}
 		return trainsDirection;
 	}
 
-	public ArrayList<Train> getTrenesEnUnaDireccionMoviendo(int direccion) {
-		ArrayList<Train> trainsDirection = new ArrayList<Train>();
-		for (Train train : trains) {
-			if (train.getDirection() == direccion && train.isOnGoing()) {
-				trainsDirection.add(train);
+	public ArrayList<TrainThread> getTrenesEnUnaDireccionMoviendo(int direccion) {
+		ArrayList<TrainThread> trainsDirection = new ArrayList<TrainThread>();
+		for (TrainThread trainThread : trainThreads) {
+			if (trainThread.getTrain().getDirection() == direccion&&trainThread.getTrain().isOnGoing()) {
+				trainsDirection.add(trainThread);
 			}
 		}
 		return trainsDirection;
@@ -86,10 +86,10 @@ public class ResourcesPool {
 		packageController = new PackageController(this);
 		packageController.start();
 		
-//		for (int i = 0; i < TRAINNUMBER; i++) {
-//			trainThreads.add(new TrainThread(trains.get(i), circuito));
-//			trainThreads.get(i).start();
-//		}
+		for (int i = 0; i < TRAINNUMBER; i++) {
+			trainThreads.add(new TrainThread(trains.get(i), circuito));
+			trainThreads.get(i).start();
+		}
 	}
 	
 
@@ -101,7 +101,15 @@ public class ResourcesPool {
 		return trains;
 	}
 
+
+
 	public Circuito getCircuito() {
 		return circuito;
+	}
+
+
+	public ArrayList<TrainThread> getTrainThreads() {
+		// TODO Auto-generated method stub
+		return trainThreads;
 	}
 }
