@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import Modelo.Rail;
 import Modelo.Station;
 import Modelo.Package;
@@ -33,6 +36,7 @@ public class Train implements Serializable {
 	private Rail rail;
 	private int direction;
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Package> packageList;
 	private boolean onGoing;
 
@@ -93,5 +97,8 @@ public class Train implements Serializable {
 
 	public void setOnGoing(boolean onGoing) {
 		this.onGoing = onGoing;
+	}
+	public void addPackageList(Package paquete) {
+		packageList.add(paquete);
 	}
 }

@@ -26,12 +26,12 @@ public class Circuito {
 
 	public synchronized Rail cogerRail(Rail rail) {
 		RailDAO railDao = new RailDAO();
-
+		System.out.println("Entra Coger Rail");
 		while (rail.isOccupied()) {
-
+			
 			try {
+				System.out.println("bloqueo");
 				wait();
-
 			} catch (InterruptedException e) {
 			}
 		}
