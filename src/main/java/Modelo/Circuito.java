@@ -26,19 +26,17 @@ public class Circuito {
 
 	public synchronized Rail cogerRail(Rail rail) {
 		RailDAO railDao = new RailDAO();
-
+		System.out.println("Entra Coger Rail");
 		while (rail.isOccupied()) {
-
+			
 			try {
-				System.out.println("Tren bloqueado!");
+				System.out.println("bloqueo");
 				wait();
-
 			} catch (InterruptedException e) {
 			}
 		}
 		rail.setOccupied(true);
 		railDao.edit(rail, rail.getRailID() - 1);
-		System.out.println("cogiendo rail");
 		return rail;
 	}
 
@@ -47,7 +45,6 @@ public class Circuito {
 		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
 		railDao.edit(rail, rail.getRailID() - 1);
-		System.out.println("soltando rail");
 		notify();
 
 	}

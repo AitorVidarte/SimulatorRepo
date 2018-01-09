@@ -1,5 +1,6 @@
 package DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -50,12 +51,12 @@ public class PackageDAO {
 	// For generating , executing hibernate select query and returns packages as a
 	// list.
 	@SuppressWarnings("unchecked")
-	public List<Package> packageListInBBDD() {
+	public ArrayList<Package> packageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		List<Package> packages = null;
+		ArrayList<Package> packages = null;
 		try {
-			packages = (List<Package>) session.createQuery("from Package").list();
+			packages = (ArrayList<Package>) session.createQuery("from Package").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -67,12 +68,12 @@ public class PackageDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Package> toSendPackageListInBBDD() {
+	public ArrayList<Package> toSendPackageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		List<Package> packages = null;
+		ArrayList<Package> packages = null;
 		try {
-			packages = (List<Package>) session.createQuery("from Package where packageState = 0").list();
+			packages = (ArrayList<Package>) session.createQuery("from Package where packageState = 0").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();

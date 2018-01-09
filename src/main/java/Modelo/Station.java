@@ -184,7 +184,6 @@ public class Station implements Serializable {
 				wait();
 
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -198,5 +197,16 @@ public class Station implements Serializable {
 	public void quitarTren(Train train) {
 		// TODO Auto-generated method stub
 		parks.remove(train);
+	}
+
+	public void addNewPackageToSend(Package paquete) {
+		// TODO Auto-generated method stub
+		sendPackageList.add(paquete);
+		
+	}
+	public void addDeliveredPackageList(Package paquete) {
+		// TODO Auto-generated method stub
+		deliveredPackageList.add(paquete);
+		
 	}
 }
