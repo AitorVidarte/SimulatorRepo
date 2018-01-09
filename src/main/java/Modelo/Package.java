@@ -27,8 +27,11 @@ public class Package implements Serializable {
 	private Station origin;
 	@ManyToOne
 	private Station destination;
+	@ManyToOne
+	private Train takeTrain;
 	private String description;
 	private int packageState;
+
 	private Date sendDate;
 	private boolean asignadoTren;
 
@@ -99,4 +102,12 @@ public class Package implements Serializable {
 	public void setAsignadoTren(boolean asignadoTren) {
 		this.asignadoTren = asignadoTren;
 	}
+	public Train getTakeTrain() {
+		return takeTrain;
+	}
+
+	public void setTakeTrain(Train takeTrain) {
+		this.takeTrain = takeTrain;
+	}
+
 }
