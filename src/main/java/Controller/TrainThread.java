@@ -130,13 +130,13 @@ public class TrainThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean seguir = true;
+		boolean seguir = false;
 		for (Station station : circuito.getEstaciones()) {
 			if (!station.equals(train.getStation())) {
 				System.out.println(station.getStationID());
 				for (Package paquete : station.getSendPackageList()) {
 					if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
-						seguir = true;
+						seguir = false;
 					}
 				}
 			}
