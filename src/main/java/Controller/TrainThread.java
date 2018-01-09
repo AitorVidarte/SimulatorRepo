@@ -27,21 +27,24 @@ public class TrainThread extends Thread {
 		while (true) {
 			
 			if (moverse()) {
+				System.out.println("entra!");
 				pedirRail();
 				salirEstacion();
 				recorreRail();
 				entrarEstacion();
-				//recogerPaquete();
+				recogerPaquete();
 				//entregarPaquete();
-				
 			}
 
 		}
 	}
 	
 	private void pedirRail() {
+		
 		for (Rail rail : circuito.getRailes()) {
+			System.out.println("entra Pedir Rail");
 			if (train.getDirection() == 0) {
+				System.out.println("Entra dir 0");
 				if ((train.getStation().getDescription().equals(rail.getPreviousStation().getDescription()))&&(train.getStation().getNextStation().getDescription().equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
@@ -63,12 +66,13 @@ public class TrainThread extends Thread {
 	
 	private void recogerPaquete() {
 		PackageDAO packageDao = new PackageDAO();
-		for (Package paquete : train.getPackageList()) {
-			if (paquete.getOrigin() == train.getStation()) {
+		for (Package paquete : train.getStation().getSendPackageList()) {
+			if (paquete.getTakeTrain() == train) {
 				paquete.setPackageState(1);
-				train.getStation().getSendPackageList().remove(paquete);
 				packageDao.edit(paquete, paquete.getPackageID());
+				train.getStation().getSendPackageList().remove(paquete);
 				System.out.println("Paquete recogido!");
+				train.setOnGoing(false); 
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e) {
@@ -148,7 +152,7 @@ public class TrainThread extends Thread {
 
 	private void recorreRail() {
 		// TODO Auto-generated method stub
-		System.out.println("Rail: "+train.getRail().getRailID());
+		//System.out.println("Rail: "+train.getRail().getRailID());
 		System.out.println("Recorriendo: ");
 		
 		for (int i = 0; i <= 100; i += 10) {
@@ -188,9 +192,6 @@ public class TrainThread extends Thread {
 	private boolean moverse() {
 		// TODO Auto-generated method stub
 		boolean go = false;
-		if (train.getTrainID() == 1 && train.isOnGoing()) {
-			System.out.println(train.isOnGoing());
-		}
 		if (train.isOnGoing()) {
 			go = true;
 			//System.out.println("Tren" + train.getTrainID() + " Go!");

@@ -204,4 +204,9 @@ public class Station implements Serializable {
 		sendPackageList.add(paquete);
 		
 	}
+	public void addDeliveredPackageList(Package paquete) {
+		// TODO Auto-generated method stub
+		deliveredPackageList.add(paquete);
+		
+	}
 }
