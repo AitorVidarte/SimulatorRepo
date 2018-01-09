@@ -83,12 +83,13 @@ public class ResourcesPool {
 	}
 
 	public void launchThreads() {
-//		packageController = new PackageController(this);
-//		packageController.start();
-		for (int i = 0; i < TRAINNUMBER; i++) {
-			trainThreads.add(new TrainThread(trains.get(i), circuito));
-			trainThreads.get(i).start();
-		}
+		packageController = new PackageController(this);
+		packageController.start();
+		
+//		for (int i = 0; i < TRAINNUMBER; i++) {
+//			trainThreads.add(new TrainThread(trains.get(i), circuito));
+//			trainThreads.get(i).start();
+//		}
 	}
 	
 

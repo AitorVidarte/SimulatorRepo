@@ -30,7 +30,6 @@ public class Circuito {
 		while (rail.isOccupied()) {
 
 			try {
-				System.out.println("Tren bloqueado!");
 				wait();
 
 			} catch (InterruptedException e) {
@@ -38,7 +37,6 @@ public class Circuito {
 		}
 		rail.setOccupied(true);
 		railDao.edit(rail, rail.getRailID() - 1);
-		System.out.println("cogiendo rail");
 		return rail;
 	}
 
@@ -47,7 +45,6 @@ public class Circuito {
 		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
 		railDao.edit(rail, rail.getRailID() - 1);
-		System.out.println("soltando rail");
 		notify();
 
 	}
