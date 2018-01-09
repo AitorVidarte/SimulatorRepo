@@ -29,14 +29,15 @@ public class TrainThread extends Thread {
 			if (moverse()) {
 				recogerPaquete();
 				entregarPaquete();
+
 				if (moverse()) {
 					pedirRail();
 					salirEstacion();
 					recorreRail();
 					entrarEstacion();
 				}
-				
-//				recogerPaquete();
+
+				// recogerPaquete();
 				// entregarPaquete();
 			}
 
@@ -52,7 +53,7 @@ public class TrainThread extends Thread {
 								.equals(rail.getNextStation().getDescription()))) {
 					circuito.cogerRail(rail);
 					train.setRail(rail);
-//					System.out.println("Rail: " + train.getRail().getRailID());
+					// System.out.println("Rail: " + train.getRail().getRailID());
 				}
 			} else if (train.getDirection() == 1) {
 				if ((train.getStation().getDescription().equals(rail.getNextStation().getDescription()))
@@ -72,47 +73,22 @@ public class TrainThread extends Thread {
 
 	private void recogerPaquete() {
 		PackageDAO packageDao = new PackageDAO();
-		
+
 		for (Package paquete : train.getStation().getSendPackageList()) {
-			
-//			System.out.println("entraPAQUETES!");
-//			System.out.println(paquete.getTakeTrain().getTrainID());
-//			System.out.println(train.getTrainID());
-//			
-//			try {
-//				Thread.sleep(10000);
-//			} catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-			
 			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
 				System.out.println("entraPAQUETES!");
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				paquete.setPackageState(1);
-				//packageDao.edit(paquete, paquete.getPackageID());
-				//train.getStation().getSendPackageList().remove(paquete);
+				// packageDao.edit(paquete, paquete.getPackageID());
+				// train.getStation().getSendPackageList().remove(paquete);
 				train.addPackageList(paquete);
 				System.out.println("Paquete recogido!");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
-		System.out.println("El tren ha recogido "+ train.getPackageList().size() + " paquetes!");
+		System.out.println("El tren ha recogido " + train.getPackageList().size() + " paquetes!");
 	}
 
 	private void entregarPaquete() {
-		
+
 		PackageDAO packageDao = new PackageDAO();
 		Set<Package> paquetes = train.getPackageList();
 		Package paquete;
@@ -129,27 +105,42 @@ public class TrainThread extends Thread {
 				it.remove();
 				System.out.println("Paquete entregado!");
 				cont++;
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			}
+
+			if (train.getPackageList().size() == 0 && !comprobarSiTengoQueSeguir()) {
+				System.out.println("PARANDO EL TREN!");
+				this.getTrain().setOnGoing(false);
+			}
+		}
+	}
+
+	private boolean comprobarSiTengoQueSeguir() {
+		try {
+			System.out.println("Comprobando!!");
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		boolean seguir = true;
+		for (Station station : circuito.getEstaciones()) {
+			if (!station.equals(train.getStation())) {
+				System.out.println(station.getStationID());
+				for (Package paquete : station.getSendPackageList()) {
+					if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
+						seguir = true;
+					}
 				}
 			}
 		}
-		if (cont == 0) {
-			System.out.println("No hay paquetes a entregar.");
+		try {
+			System.out.println("Comprobando!!");
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (train.getPackageList().size() == 0) {
-			System.out.println("PARANDO EL TREN!");
-			this.getTrain().setOnGoing(false);
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		return seguir;
 	}
 
 	private void salirEstacion() {
@@ -168,7 +159,7 @@ public class TrainThread extends Thread {
 		Rail rail = train.getRail();
 		Station station = null;
 		TrainDAO trainDao = new TrainDAO();
-		
+
 		StationDAO stationDao = new StationDAO();
 
 		train.setStation(rail.getNextStation());
@@ -183,7 +174,7 @@ public class TrainThread extends Thread {
 	private void recorreRail() {
 		// TODO Auto-generated method stub
 		// System.out.println("Rail: "+train.getRail().getRailID());
-		
+
 		System.out.println("Recorriendo: ");
 
 		for (int i = 0; i <= 100; i += 10) {
