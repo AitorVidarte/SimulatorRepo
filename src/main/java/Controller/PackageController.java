@@ -25,7 +25,14 @@ public class PackageController extends Thread {
 	}
 
 	public void run() {
-		ponerTrenEnMarcha();
+		try {
+			Thread.sleep(5000);
+			ponerTrenEnMarcha();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 //		while (true) {
 //			ponerTrenEnMarcha();
 //			if (mirarPaquetesEnBaseDeDatos()) {
