@@ -176,6 +176,7 @@ public class Station implements Serializable {
 		int pos = 0;
 
 		for (Train tren : parks) {
+			tren.getDirection();
 			pos++;
 		}
 		if (pos == 4) {

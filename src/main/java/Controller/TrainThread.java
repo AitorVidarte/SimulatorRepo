@@ -106,7 +106,7 @@ public class TrainThread extends Thread {
 		Set<Package> paquetes = train.getPackageList();
 		Package paquete;
 		Iterator<Package> it = paquetes.iterator();
-		int cont = 0;
+		
 
 		while (it.hasNext()) {
 			paquete = it.next();
@@ -117,7 +117,7 @@ public class TrainThread extends Thread {
 				train.getStation().getDeliveredPackageList().add(paquete);
 				it.remove();
 				System.out.println("Paquete entregado!");
-				cont++;
+				
 			}
 
 			if (train.getPackageList().size() == 0 && !comprobarSiTengoQueSeguir()) {
@@ -158,7 +158,7 @@ public class TrainThread extends Thread {
 
 	private void salirEstacion() {
 
-		StationDAO stationDao = new StationDAO();
+		//StationDAO stationDao = new StationDAO();
 		Station station = train.getStation();
 		System.out.println("Rail: " + train.getRail().getRailID());
 		station.quitarTren(train);
@@ -171,7 +171,7 @@ public class TrainThread extends Thread {
 
 		Rail rail = train.getRail();
 		Station station = null;
-		TrainDAO trainDao = new TrainDAO();
+		//TrainDAO trainDao = new TrainDAO();
 
 		StationDAO stationDao = new StationDAO();
 

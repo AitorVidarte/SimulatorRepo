@@ -5,7 +5,6 @@ import java.util.List;
 
 import DAO.PackageDAO;
 import DAO.StationDAO;
-import DAO.TrainDAO;
 import Modelo.Station;
 import Modelo.Train;
 import Modelo.Package;
@@ -15,13 +14,15 @@ public class PackageController extends Thread {
 	ResourcesPool resourcePool;
 	boolean paqueteCreado = false;
 	List<Package> listaPaquetes;
+	List<TrainThread> trainThreads;
 
 	@SuppressWarnings("unused")
 	private int nPackages = 0;
 
-	public PackageController(ResourcesPool resourcePool) {
+	public PackageController(ResourcesPool resourcePool,List<TrainThread> trainThreads) {
 		this.resourcePool = resourcePool;
 		listaPaquetes = new ArrayList<Package>();
+		this.trainThreads = trainThreads;
 	}
 
 	public void run() {
@@ -137,8 +138,8 @@ public class PackageController extends Thread {
 	}
 
 	private Train buscarTrenParaPaquete(Package paquete) {
-		List<Train> trenes = resourcePool.getTrains();
-		TrainDAO trainDao = new TrainDAO();
+		//List<Train> trenes = resourcePool.getTrains();
+		//TrainDAO trainDao = new TrainDAO();
 		TrainThread trainMejor = null;
 		int direccion = calcularDireccionPaquete(paquete);
 		int elMejor = 6, distancia;

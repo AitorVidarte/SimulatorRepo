@@ -6,7 +6,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import Modelo.Station;
-import Modelo.Train;
 import hibernate.HibernateUtil;
 
 public class StationDAO {
