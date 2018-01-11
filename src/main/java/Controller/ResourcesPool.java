@@ -45,8 +45,6 @@ public class ResourcesPool {
 	// leyendo los datos de la base de datos y creando objetos( trenes,paquetes, railes y estaciones)
 	public void iniciarCircuito() {
 
-		
-
 		this.stations = stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
 		this.trains = trainDao.list();
@@ -61,7 +59,21 @@ public class ResourcesPool {
 			}
 		}
 
-		this.rails = (ArrayList<Rail>) railDao.list();
+		rails.add(new Rail(1,stations.get(0),stations.get(1),false));
+		rails.add(new Rail(2,stations.get(1),stations.get(2),false));
+		rails.add(new Rail(3,stations.get(2),stations.get(3),false));
+		rails.add(new Rail(4,stations.get(3),stations.get(4),false));
+		rails.add(new Rail(5,stations.get(4),stations.get(5),false));
+		rails.add(new Rail(6,stations.get(5),stations.get(0),false));
+		
+		rails.add(new Rail(7,stations.get(1),stations.get(0),false));
+		rails.add(new Rail(8,stations.get(0),stations.get(5),false));
+		rails.add(new Rail(9,stations.get(5),stations.get(4),false));
+		rails.add(new Rail(10,stations.get(4),stations.get(3),false));
+		rails.add(new Rail(11,stations.get(3),stations.get(2),false));
+		rails.add(new Rail(12,stations.get(2),stations.get(1),false));
+		
+		
 
 		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);

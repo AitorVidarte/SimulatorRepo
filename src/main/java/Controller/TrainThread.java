@@ -63,6 +63,7 @@ public class TrainThread extends Thread {
 		
 		if (train.getPackageList().size() == 0) {
 			train.setOnGoing(false);
+			trainDao.edit(train);
 			System.out.println("Tren Parado!");
 		}
 		
