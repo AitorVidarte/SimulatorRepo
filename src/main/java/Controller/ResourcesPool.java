@@ -119,7 +119,7 @@ public class ResourcesPool {
 						trainMejor = trainsMoving;
 						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
 						pack.setTakeTrain(trainMejor.getTrain());
-						packageDao.edit(pack, pack.getPackageID()-1);
+						packageDao.edit(pack);
 						
 						
 					}
@@ -139,7 +139,7 @@ public class ResourcesPool {
 								elMejor = distancia;
 								trainMejor = trainStoped;
 								pack.setTakeTrain(trainMejor.getTrain());
-								packageDao.edit(pack, pack.getPackageID()-1);
+								packageDao.edit(pack);
 							}
 						}
 						

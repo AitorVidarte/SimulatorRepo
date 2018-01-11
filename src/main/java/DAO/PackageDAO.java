@@ -35,14 +35,10 @@ public class PackageDAO {
 		return paquete;
 	}
 	
-	public void edit(Package paquete, int id) {
+	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Package paquete1 = session.get(Package.class, id);
-		paquete1 = paquete;
-		if(paquete1 != null) {
-			session.update(paquete1);
-		}
+		session.beginTransaction();	
+		session.update(paquete);
 		session.getTransaction().commit();
 		session.close();
 	}

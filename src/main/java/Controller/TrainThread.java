@@ -43,7 +43,6 @@ public class TrainThread extends Thread {
 					System.out.println("El tren esta en"+train.getStation().getDescription());
 					entrarEstacion();
 				}
-				this.stop();
 
 				// recogerPaquete();
 				// entregarPaquete();
@@ -76,7 +75,7 @@ public class TrainThread extends Thread {
 			}
 			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
 				paquete.setPackageState(1);
-				packageDao.edit(paquete, paquete.getPackageID() - 1);
+				packageDao.edit(paquete);
 				train.addPackageList(paquete);
 				this.getTrain().addPackageList(paquete);
 				itStationPackages.remove();
@@ -107,7 +106,7 @@ public class TrainThread extends Thread {
 				
 				train.getStation().addNewPackageToSend(paquete);
 				
-				packageDao.edit(paquete, (paquete.getPackageID()-1));
+				packageDao.edit(paquete);
 				
 				itTrainPackages.remove();
 				System.out.println("Paquete entregado!");
