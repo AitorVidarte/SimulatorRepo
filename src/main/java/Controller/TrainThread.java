@@ -31,6 +31,13 @@ public class TrainThread extends Thread {
 
 			if (moverse()) {
 				
+				try {
+					System.out.println("Estacion:" +train.getStation().getDescription());
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				recogerPaquete();
 				entregarPaquete();
 				System.out.println("El tren tiene: "+train.getPackageList().size()+" paquetes y ha dejado :"+train.getStation().getSendPackageList().size()+" paquetes en la estacion.");
@@ -59,6 +66,18 @@ public class TrainThread extends Thread {
 			System.out.println("Tren Parado!");
 		}
 		
+	}
+
+	private boolean tengoPaquetesPorRecoger() {
+		boolean parar=true;
+		for (Station station : circuito.getEstaciones()) {
+			for (Package stationPackage : station.getSendPackageList()) {
+				if(stationPackage.getTakeTrain().getTrainID() == train.getTrainID()) {
+					parar=false;
+				}
+			}
+		}
+		return parar;
 	}
 
 	private void recogerPaquete() {

@@ -70,7 +70,7 @@ public class ResourcesPool {
 		asignarPaquetesAEstaciones(); // asignados los objetos paquete leidos de la base de datos a los objetos estacion.
 		createThreads();// creando los hilos tipo Tren pasandole el tren y el circuito.
 		asignarTrenAPaquete();
-		//mostrarDatos();
+		mostrarDatos();
 		launchThreads();// lanzando los hilos!
 
 	}
@@ -214,6 +214,7 @@ public class ResourcesPool {
 	public void createThreads() {
 		// packageController = new PackageController(this);
 		for (int i = 0; i < TRAINNUMBER; i++) {
+			
 			trainThreads.add(new TrainThread(trains.get(i), circuito));
 			
 			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
