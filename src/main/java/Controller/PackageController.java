@@ -25,48 +25,35 @@ public class PackageController extends Thread {
 	}
 
 	public void run() {
-		try {
-			Thread.sleep(5000);
-			ponerTrenEnMarcha();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		while (true) {
+			if (mirarPaquetesEnBaseDeDatos()) {
+				listaPaquetes = cogerPaqutes();
+				asignarPaquetesAEstacion();
+				ponerTrenEnMarcha();
+
+			} else {
+				resourcePool.pararThreadenMarcha(1);
+			}
+
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
-//		while (true) {
-//			ponerTrenEnMarcha();
-//			if (mirarPaquetesEnBaseDeDatos()) {
-//				listaPaquetes = cogerPaqutes();
-//				asignarPaquetesAEstacion();
-////				asignarPaquetesATrenes();
-//				ponerTrenEnMarcha();
-//			}
-//
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 
 	private void asignarPaquetesAEstacion() {
-		PackageDAO packageDao = new PackageDAO();
-//		StationDAO stationDao = new StationDAO();
-		
-//		Station station = null;
+		StationDAO stationDao = new StationDAO();
 		for (Package paquete : listaPaquetes) {
 			for (Station station : resourcePool.getStations()) {
 				if (station.getStationID() == paquete.getOrigin().getStationID()) {
-					//System.out.println("Entra!");
 					station.addNewPackageToSend(paquete);
+					System.out.println(station.getSendPackageList().size());
+					stationDao.edit(station);
 				}
 			}
-//			station = paquete.getOrigin();
-//			station.addNewPackageToSend(paquete);
-			paquete.setPackageState(1);
-			packageDao.edit(paquete, paquete.getPackageID() - 1);
-			//stationDao.edit(station);
 		}
 
 	}
@@ -87,7 +74,12 @@ public class PackageController extends Thread {
 			setnPackages(paquetes.size());
 			change = true;
 		}
-		System.out.println(nPackages);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return change;
 
 	}
@@ -134,16 +126,14 @@ public class PackageController extends Thread {
 		}
 		return i;
 	}
-	
+
 	private void ponerTrenEnMarcha() {
 		resourcePool.ponThreadenMarcha(1);
-		
-//		ArrayList<TrainThread> trainThreads;
-//		trainThreads = resourcePool.getTrainThreads();
-//		trainThreads.get(0).ponerEnMarcha();
-		
-		
-		
+
+		// ArrayList<TrainThread> trainThreads;
+		// trainThreads = resourcePool.getTrainThreads();
+		// trainThreads.get(0).ponerEnMarcha();
+
 	}
 
 	private Train buscarTrenParaPaquete(Package paquete) {
@@ -152,9 +142,10 @@ public class PackageController extends Thread {
 		TrainThread trainMejor = null;
 		int direccion = calcularDireccionPaquete(paquete);
 		int elMejor = 6, distancia;
-		
+
 		for (TrainThread trainThread : resourcePool.getTrenesEnUnaDireccionMoviendo(direccion)) {
-			distancia = distanciaEntreEstaciones(trainThread.getTrain().getStation(), paquete.getOrigin(), trainThread.getTrain().getDirection());
+			distancia = distanciaEntreEstaciones(trainThread.getTrain().getStation(), paquete.getOrigin(),
+					trainThread.getTrain().getDirection());
 			if (distancia < elMejor) {
 				elMejor = distancia;
 				trainMejor = trainThread;
@@ -162,7 +153,8 @@ public class PackageController extends Thread {
 		}
 		if (trainMejor == null) {
 			for (TrainThread trainThread : resourcePool.getTrenesEnUnaDireccion(direccion)) {
-				distancia = distanciaEntreEstaciones(trainThread.getTrain().getStation(), paquete.getOrigin(), trainThread.getTrain().getDirection());
+				distancia = distanciaEntreEstaciones(trainThread.getTrain().getStation(), paquete.getOrigin(),
+						trainThread.getTrain().getDirection());
 				if (distancia < elMejor) {
 					elMejor = distancia;
 					trainMejor = trainThread;
@@ -170,7 +162,7 @@ public class PackageController extends Thread {
 			}
 		}
 		trainMejor.getTrain().setOnGoing(true);
-		trainDao.edit(trainMejor.getTrain(),trainMejor.getTrain().getTrainID()-1);
+		//trainDao.edit(trainMejor.getTrain(), trainMejor.getTrain().getTrainID() - 1);
 		return trainMejor.getTrain();
 	}
 

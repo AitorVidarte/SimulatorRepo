@@ -16,8 +16,10 @@ public class TrainThread extends Thread {
 
 	Train train;
 	Circuito circuito;
+	PackageDAO packageDao = new PackageDAO();
 
 	public TrainThread(Train train, Circuito circuito) {
+		System.out.println("Tren creado en la estacion:" + train.getStation().getDescription()+train.isOnGoing());
 		this.train = train;
 		this.circuito = circuito;
 	}
@@ -27,15 +29,16 @@ public class TrainThread extends Thread {
 		while (true) {
 
 			if (moverse()) {
-				recogerPaquete();
-				entregarPaquete();
-
-				if (moverse()) {
-					pedirRail();
-					salirEstacion();
-					recorreRail();
-					entrarEstacion();
-				}
+				System.out.println("Tren: "+this.getTrain().getTrainID()+" en movimiento!");
+//				recogerPaquete();
+//				entregarPaquete();
+//
+//				if (moverse()) {
+//					pedirRail();
+//					salirEstacion();
+//					recorreRail();
+//					entrarEstacion();
+//				}
 
 				// recogerPaquete();
 				// entregarPaquete();
@@ -43,6 +46,8 @@ public class TrainThread extends Thread {
 
 		}
 	}
+
+	
 
 	private void pedirRail() {
 
@@ -72,7 +77,7 @@ public class TrainThread extends Thread {
 	}
 
 	private void recogerPaquete() {
-		PackageDAO packageDao = new PackageDAO();
+		
 		
 		try {
 			System.out.println("Recogiendo paquetes...");
@@ -86,7 +91,7 @@ public class TrainThread extends Thread {
 			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
 				System.out.println("entraPAQUETES!");
 				paquete.setPackageState(1);
-				// packageDao.edit(paquete, paquete.getPackageID());
+				packageDao.edit(paquete, paquete.getPackageID()-1);
 				// train.getStation().getSendPackageList().remove(paquete);
 				train.addPackageList(paquete);
 				System.out.println("Paquete recogido!");
@@ -107,8 +112,8 @@ public class TrainThread extends Thread {
 			paquete = it.next();
 			if (paquete.getDestination().getStationID() == train.getStation().getStationID()) {
 				paquete.setPackageState(2);
-				System.out.println(paquete.getPackageID());
-				packageDao.edit(paquete, (paquete.getPackageID() - 1));
+				//stem.out.println(paquete.getPackageID());
+				packageDao.edit(paquete, (paquete.getPackageID()-1));
 				train.getStation().getDeliveredPackageList().add(paquete);
 				it.remove();
 				System.out.println("Paquete entregado!");
@@ -175,8 +180,8 @@ public class TrainThread extends Thread {
 		station = train.getStation();
 		station.aparcarTren(train);
 		System.out.println(train.getTrainID() - 1);
-		trainDao.edit(train, train.getTrainID() - 1);
-		// stationDao.edit(train.getStation());
+		//trainDao.edit(train, train.getTrainID() - 1);
+		stationDao.edit(train.getStation());
 	}
 
 	private void recorreRail() {
@@ -236,4 +241,11 @@ public class TrainThread extends Thread {
 		this.train = train;
 	}
 
+	public Circuito getCircuito() {
+		return circuito;
+	}
+
+	public void setCircuito(Circuito circuito) {
+		this.circuito = circuito;
+	}
 }

@@ -196,7 +196,7 @@ public class Station implements Serializable {
 
 	public void quitarTren(Train train) {
 		// TODO Auto-generated method stub
-		parks.remove(train);
+		//parks.remove(train);
 	}
 
 	public void addNewPackageToSend(Package paquete) {

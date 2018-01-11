@@ -35,7 +35,7 @@ public class PackageDAO {
 		return paquete;
 	}
 	
-	public Package edit(Package paquete, int id) {
+	public void edit(Package paquete, int id) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
 		Package paquete1 = session.get(Package.class, id);
@@ -45,7 +45,6 @@ public class PackageDAO {
 		}
 		session.getTransaction().commit();
 		session.close();
-		return paquete;
 	}
 	
 	// For generating , executing hibernate select query and returns packages as a

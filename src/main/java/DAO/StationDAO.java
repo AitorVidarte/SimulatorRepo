@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import Modelo.Station;
+import Modelo.Train;
 import hibernate.HibernateUtil;
 
 public class StationDAO {
@@ -36,9 +37,7 @@ public class StationDAO {
 	public Station edit(Station station) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		if (station != null) {
-			session.update(station);
-		}
+		session.update(station);
 		session.getTransaction().commit();
 		session.close();
 		return station;
