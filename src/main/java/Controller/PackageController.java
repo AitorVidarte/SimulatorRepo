@@ -69,7 +69,7 @@ public class PackageController extends Thread {
 			change = true;
 		}
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
