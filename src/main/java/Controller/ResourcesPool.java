@@ -73,7 +73,9 @@ public class ResourcesPool {
 		rails.add(new Rail(11,stations.get(3),stations.get(2),false));
 		rails.add(new Rail(12,stations.get(2),stations.get(1),false));
 		
-		
+		for (Rail rail: rails) {
+			railDao.edit(rail);
+		}
 
 		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);
