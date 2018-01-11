@@ -33,7 +33,7 @@ public class TrainThread extends Thread {
 				
 				recogerPaquete();
 				entregarPaquete();
-				System.out.println("El tren tiene: "+train.getPackageList().size()+" paquetes y la estacion :"+train.getStation().getSendPackageList().size());
+				System.out.println("El tren tiene: "+train.getPackageList().size()+" paquetes y ha dejado :"+train.getStation().getSendPackageList().size()+" paquetes en la estacion.");
 				comprobarSiTieneQueParar();
 				if (moverse()) {
 					pedirRail();
@@ -42,6 +42,7 @@ public class TrainThread extends Thread {
 					recorreRail();
 					System.out.println("El tren esta en"+train.getStation().getDescription());
 					entrarEstacion();
+					soltarRail(train.getRail());
 				}
 
 				// recogerPaquete();
@@ -55,6 +56,7 @@ public class TrainThread extends Thread {
 		
 		if (train.getPackageList().size() == 0) {
 			train.setOnGoing(false);
+			System.out.println("Tren Parado!");
 		}
 		
 	}
