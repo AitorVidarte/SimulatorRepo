@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import DAO.PackageDAO;
-import DAO.StationDAO;
 import DAO.TrainDAO;
 import Modelo.Circuito;
 import Modelo.Rail;
@@ -31,7 +30,7 @@ public class TrainThread extends Thread {
 
 		while (true) {
 			
-			comprobarEstaciones();
+			//comprobarEstaciones();
 
 			if (moverse()) {
 				try {
@@ -230,6 +229,8 @@ public class TrainThread extends Thread {
 
 	private void soltarRail(Rail rail) {
 		circuito.soltarRail(rail);
+		train.setRail(null);
+		trainDao.edit(train);
 	}
 
 	private boolean moverse() {
