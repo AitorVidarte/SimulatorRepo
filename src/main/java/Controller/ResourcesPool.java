@@ -45,8 +45,6 @@ public class ResourcesPool {
 	// leyendo los datos de la base de datos y creando objetos( trenes,paquetes, railes y estaciones)
 	public void iniciarCircuito() {
 
-		
-
 		this.stations = stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
 		this.trains = trainDao.list();
@@ -61,7 +59,24 @@ public class ResourcesPool {
 			}
 		}
 
-		this.rails = (ArrayList<Rail>) railDao.list();
+		rails.add(new Rail(1,stations.get(0),stations.get(1),false));
+		rails.add(new Rail(2,stations.get(1),stations.get(2),false));
+		rails.add(new Rail(3,stations.get(2),stations.get(3),false));
+		rails.add(new Rail(4,stations.get(3),stations.get(4),false));
+		rails.add(new Rail(5,stations.get(4),stations.get(5),false));
+		rails.add(new Rail(6,stations.get(5),stations.get(0),false));
+		
+		rails.add(new Rail(7,stations.get(1),stations.get(0),false));
+		rails.add(new Rail(8,stations.get(0),stations.get(5),false));
+		rails.add(new Rail(9,stations.get(5),stations.get(4),false));
+		rails.add(new Rail(10,stations.get(4),stations.get(3),false));
+		rails.add(new Rail(11,stations.get(3),stations.get(2),false));
+		rails.add(new Rail(12,stations.get(2),stations.get(1),false));
+		
+		for (Rail rail: rails) {
+			System.out.println("Rai: "+rail.getRailID()+" estacion anterior: "+rail.getPreviousStation().getStationID()+" siguiente estacion: "+ rail.getNextStation().getStationID());
+			railDao.edit(rail);
+		}
 
 		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);
@@ -119,11 +134,8 @@ public class ResourcesPool {
 						trainMejor = trainsMoving;
 						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
 						pack.setTakeTrain(trainMejor.getTrain());
-						packageDao.edit(pack, pack.getPackageID()-1);
-						
-						
+						packageDao.edit(pack);	
 					}
-					
 				}
 				if (trainMejor == null) {
 					for (TrainThread trainStoped : getTrenesEnUnaDireccion(calcularDireccionPaquete(pack))) {
@@ -139,7 +151,7 @@ public class ResourcesPool {
 								elMejor = distancia;
 								trainMejor = trainStoped;
 								pack.setTakeTrain(trainMejor.getTrain());
-								packageDao.edit(pack, pack.getPackageID()-1);
+								packageDao.edit(pack);
 							}
 						}
 						
@@ -214,7 +226,8 @@ public class ResourcesPool {
 	public void createThreads() {
 		// packageController = new PackageController(this);
 		for (int i = 0; i < TRAINNUMBER; i++) {
-			trainThreads.add(new TrainThread(trains.get(i), circuito));
+			
+			trainThreads.add(new TrainThread(trains.get(i), circuito,this));
 			
 			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
 					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
@@ -225,7 +238,7 @@ public class ResourcesPool {
 //						+ " tiene que ser secogido por el tren: " + pack.getTakeTrain().getTrainID());
 //			}
 		}
-		//packageController = new PackageController(this,trainThreads);
+		packageController = new PackageController(this,trainThreads);
 	}
 
 	public void launchThreads() {
@@ -233,7 +246,7 @@ public class ResourcesPool {
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			trainThreads.get(i).start();
 		}
-		//packageController.start();
+		packageController.start();
 	}
 
 	public List<Station> getStations() {

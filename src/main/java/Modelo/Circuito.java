@@ -37,7 +37,7 @@ public class Circuito {
 			}
 		}
 		rail.setOccupied(true);
-		railDao.edit(rail, rail.getRailID() - 1);
+		railDao.edit(rail);
 		return rail;
 	}
 
@@ -45,7 +45,7 @@ public class Circuito {
 
 		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
-		railDao.edit(rail, rail.getRailID() - 1);
+		railDao.edit(rail);
 		notify();
 
 	}

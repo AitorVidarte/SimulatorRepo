@@ -35,14 +35,10 @@ public class PackageDAO {
 		return paquete;
 	}
 	
-	public void edit(Package paquete, int id) {
+	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Package paquete1 = session.get(Package.class, id);
-		paquete1 = paquete;
-		if(paquete1 != null) {
-			session.update(paquete1);
-		}
+		session.beginTransaction();	
+		session.update(paquete);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -72,7 +68,7 @@ public class PackageDAO {
 		session.beginTransaction();
 		List<Package> packages = null;
 		try {
-			packages =  session.createQuery("from Package where packageState = 0").list();
+			packages =  session.createQuery("from Package where packageState = 3").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
