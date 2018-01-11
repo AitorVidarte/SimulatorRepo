@@ -49,7 +49,10 @@ public class Station implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Package> deliveredPackageList = new ArrayList<Package>();
 
-	public Station() {
+	public Station() {}
+	
+	public Station(String description) {
+		this.description = description;
 	}
 
 	public Station(int stationID, double coordinatesLat, double coordinatesLng, String description, int nextExitSwitch,
@@ -176,6 +179,7 @@ public class Station implements Serializable {
 		int pos = 0;
 
 		for (Train tren : parks) {
+			tren.getDirection();
 			pos++;
 		}
 		if (pos == 4) {
@@ -196,7 +200,7 @@ public class Station implements Serializable {
 
 	public void quitarTren(Train train) {
 		// TODO Auto-generated method stub
-		parks.remove(train);
+		//parks.remove(train);
 	}
 
 	public void addNewPackageToSend(Package paquete) {
