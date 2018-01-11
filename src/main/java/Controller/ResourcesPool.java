@@ -238,7 +238,7 @@ public class ResourcesPool {
 //						+ " tiene que ser secogido por el tren: " + pack.getTakeTrain().getTrainID());
 //			}
 		}
-		//packageController = new PackageController(this,trainThreads);
+		packageController = new PackageController(this,trainThreads);
 	}
 
 	public void launchThreads() {
@@ -246,7 +246,7 @@ public class ResourcesPool {
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			trainThreads.get(i).start();
 		}
-		//packageController.start();
+		packageController.start();
 	}
 
 	public List<Station> getStations() {

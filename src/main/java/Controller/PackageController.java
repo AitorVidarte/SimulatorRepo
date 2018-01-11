@@ -15,6 +15,7 @@ public class PackageController extends Thread {
 	boolean paqueteCreado = false;
 	List<Package> listaPaquetes;
 	List<TrainThread> trainThreads;
+	PackageDAO packageDao = new PackageDAO();
 
 	@SuppressWarnings("unused")
 	private int nPackages = 0;
@@ -27,34 +28,27 @@ public class PackageController extends Thread {
 
 	public void run() {
 
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		while (true) {
 			if (mirarPaquetesEnBaseDeDatos()) {
 				listaPaquetes = cogerPaqutes();
 				asignarPaquetesAEstacion();
-				ponerTrenEnMarcha();
-
-			} else {
-				resourcePool.pararThreadenMarcha(1);
-			}
-
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				//ponerTrenEnMarcha()
 			}
 		}
 	}
 
 	private void asignarPaquetesAEstacion() {
 		StationDAO stationDao = new StationDAO();
+		System.out.println(listaPaquetes.size());
 		for (Package paquete : listaPaquetes) {
-			for (Station station : resourcePool.getStations()) {
-				if (station.getStationID() == paquete.getOrigin().getStationID()) {
-					station.addNewPackageToSend(paquete);
-					System.out.println(station.getSendPackageList().size());
-					stationDao.edit(station);
-				}
-			}
+			paquete.setPackageState(0);
+			packageDao.edit(paquete);
+			resourcePool.getCircuito().getEstaciones().get(0).addNewPackageToSend(paquete);
 		}
 
 	}
@@ -69,14 +63,13 @@ public class PackageController extends Thread {
 		boolean change = false;
 		PackageDAO packageDao = new PackageDAO();
 		List<Package> paquetes = packageDao.toSendPackageListInBBDD();
-		System.out.println(nPackages);
 		if (nPackages != paquetes.size()) {
 			System.out.println("ok");
 			setnPackages(paquetes.size());
 			change = true;
 		}
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

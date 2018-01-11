@@ -30,7 +30,7 @@ public class TrainThread extends Thread {
 
 		while (true) {
 			
-			//comprobarEstaciones();
+			comprobarEstaciones();
 
 			if (moverse()) {
 				try {
@@ -67,6 +67,7 @@ public class TrainThread extends Thread {
 			for (Package package1 : station.getSendPackageList()) {
 				System.out.println(package1.getDescription());
 				if (package1.getTakeTrain().getTrainID() == train.getTrainID()) {
+					train.setOnGoing(true);
 					System.out.println(package1.getTakeTrain().getTrainID()+" "+train.getTrainID()+"############ y es para el!");
 				}
 				else {

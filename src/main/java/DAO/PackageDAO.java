@@ -68,7 +68,7 @@ public class PackageDAO {
 		session.beginTransaction();
 		List<Package> packages = null;
 		try {
-			packages =  session.createQuery("from Package where packageState = 0").list();
+			packages =  session.createQuery("from Package where packageState = 3").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
