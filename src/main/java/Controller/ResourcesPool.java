@@ -134,11 +134,8 @@ public class ResourcesPool {
 						trainMejor = trainsMoving;
 						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
 						pack.setTakeTrain(trainMejor.getTrain());
-						packageDao.edit(pack);
-						
-						
+						packageDao.edit(pack);	
 					}
-					
 				}
 				if (trainMejor == null) {
 					for (TrainThread trainStoped : getTrenesEnUnaDireccion(calcularDireccionPaquete(pack))) {

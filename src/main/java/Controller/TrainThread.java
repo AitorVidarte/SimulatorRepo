@@ -31,7 +31,7 @@ public class TrainThread extends Thread {
 
 		while (true) {
 			
-			//comprobarEstaciones();
+			comprobarEstaciones();
 
 			if (moverse()) {
 				try {
@@ -134,7 +134,6 @@ public class TrainThread extends Thread {
 		}
 	}
 
-
 	private void entregarPaquete() {
 
 		Iterator<Package> itTrainPackages = train.getPackageList().iterator();
@@ -153,7 +152,7 @@ public class TrainThread extends Thread {
 			if (paquete.getDestination().getStationID() == train.getStation().getStationID()) {
 				paquete.setPackageState(2);
 				
-				train.getStation().addNewPackageToSend(paquete);
+				train.getStation().addDeliveredPackageList(paquete);
 				
 				packageDao.edit(paquete);
 				
