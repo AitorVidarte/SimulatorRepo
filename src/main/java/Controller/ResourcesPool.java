@@ -74,6 +74,7 @@ public class ResourcesPool {
 		rails.add(new Rail(12,stations.get(2),stations.get(1),false));
 		
 		for (Rail rail: rails) {
+			System.out.println("Rai: "+rail.getRailID()+" estacion anterior: "+rail.getPreviousStation().getStationID()+" siguiente estacion: "+ rail.getNextStation().getStationID());
 			railDao.edit(rail);
 		}
 
@@ -84,7 +85,7 @@ public class ResourcesPool {
 		asignarPaquetesAEstaciones(); // asignados los objetos paquete leidos de la base de datos a los objetos estacion.
 		createThreads();// creando los hilos tipo Tren pasandole el tren y el circuito.
 		asignarTrenAPaquete();
-		mostrarDatos();
+		//mostrarDatos();
 		launchThreads();// lanzando los hilos!
 
 	}
@@ -229,7 +230,7 @@ public class ResourcesPool {
 		// packageController = new PackageController(this);
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			
-			trainThreads.add(new TrainThread(trains.get(i), circuito));
+			trainThreads.add(new TrainThread(trains.get(i), circuito,this));
 			
 			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
 					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
