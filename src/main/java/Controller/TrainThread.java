@@ -17,6 +17,7 @@ public class TrainThread extends Thread {
 	Train train;
 	Circuito circuito;
 	PackageDAO packageDao = new PackageDAO();
+	TrainDAO trainDao = new TrainDAO();
 
 	public TrainThread(Train train, Circuito circuito) {
 		System.out.println("Tren creado en la estacion:" + train.getStation().getDescription()+train.isOnGoing());
@@ -40,7 +41,7 @@ public class TrainThread extends Thread {
 					salirEstacion();
 					recorreRail();
 					System.out.println("El tren esta en"+train.getStation().getDescription());
-					//entrarEstacion();
+					entrarEstacion();
 				}
 				this.stop();
 
@@ -150,19 +151,13 @@ public class TrainThread extends Thread {
 
 	private void entrarEstacion() {
 
-		Rail rail = train.getRail();
-		Station station = null;
-		//TrainDAO trainDao = new TrainDAO();
-
-		StationDAO stationDao = new StationDAO();
-
-		train.setStation(rail.getNextStation());
-		soltarRail(rail);
-		station = train.getStation();
-		station.aparcarTren(train);
-		System.out.println(train.getTrainID() - 1);
-		//trainDao.edit(train, train.getTrainID() - 1);
-		stationDao.edit(train.getStation());
+		Station station = train.getStation();
+		station.quitarTren(train);
+		Train train = this.getTrain();
+		train.setStation(train.getRail().getNextStation());
+		trainDao.edit(train);
+		
+		
 	}
 
 	private void recorreRail() {
