@@ -49,7 +49,10 @@ public class Station implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Package> deliveredPackageList = new ArrayList<Package>();
 
-	public Station() {
+	public Station() {}
+	
+	public Station(String description) {
+		this.description = description;
 	}
 
 	public Station(int stationID, double coordinatesLat, double coordinatesLng, String description, int nextExitSwitch,
