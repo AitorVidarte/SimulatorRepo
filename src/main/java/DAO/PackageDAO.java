@@ -1,6 +1,6 @@
 package DAO;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -35,28 +35,23 @@ public class PackageDAO {
 		return paquete;
 	}
 	
-	public Package edit(Package paquete, int id) {
+	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Package paquete1 = session.get(Package.class, id);
-		paquete1 = paquete;
-		if(paquete1 != null) {
-			session.update(paquete1);
-		}
+		session.beginTransaction();	
+		session.update(paquete);
 		session.getTransaction().commit();
 		session.close();
-		return paquete;
 	}
 	
 	// For generating , executing hibernate select query and returns packages as a
 	// list.
 	@SuppressWarnings("unchecked")
-	public ArrayList<Package> packageListInBBDD() {
+	public List<Package> packageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		ArrayList<Package> packages = null;
+		List<Package> packages = null;
 		try {
-			packages = (ArrayList<Package>) session.createQuery("from Package").list();
+			packages = session.createQuery("from Package").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -68,12 +63,12 @@ public class PackageDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Package> toSendPackageListInBBDD() {
+	public List<Package> toSendPackageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		ArrayList<Package> packages = null;
+		List<Package> packages = null;
 		try {
-			packages = (ArrayList<Package>) session.createQuery("from Package where packageState = 0").list();
+			packages =  session.createQuery("from Package where packageState = 3").list();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();

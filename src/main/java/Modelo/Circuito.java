@@ -1,13 +1,14 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import DAO.RailDAO;
 
 public class Circuito {
 
-	ArrayList<Rail> railes;
-	ArrayList<Station> estaciones;
+	List<Rail> railes;
+	List<Station> estaciones;
 
 	public Circuito() {
 
@@ -16,12 +17,12 @@ public class Circuito {
 
 	}
 
-	public ArrayList<Rail> getRailes() {
+	public List<Rail> getRailes() {
 		return railes;
 	}
 
-	public void setRailes(ArrayList<Rail> ralies) {
-		this.railes = ralies;
+	public void setRailes(List<Rail> rails) {
+		this.railes = rails;
 	}
 
 	public synchronized Rail cogerRail(Rail rail) {
@@ -36,7 +37,7 @@ public class Circuito {
 			}
 		}
 		rail.setOccupied(true);
-		railDao.edit(rail, rail.getRailID() - 1);
+		railDao.edit(rail);
 		return rail;
 	}
 
@@ -44,17 +45,17 @@ public class Circuito {
 
 		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
-		railDao.edit(rail, rail.getRailID() - 1);
+		railDao.edit(rail);
 		notify();
 
 	}
 
-	public ArrayList<Station> getEstaciones() {
+	public List<Station> getEstaciones() {
 		return estaciones;
 	}
 
-	public void setEstaciones(ArrayList<Station> estaciones) {
-		this.estaciones = estaciones;
+	public void setEstaciones(List<Station> stations) {
+		this.estaciones = stations;
 	}
 
 }

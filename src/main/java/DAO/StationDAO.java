@@ -36,9 +36,7 @@ public class StationDAO {
 	public Station edit(Station station) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		if (station != null) {
-			session.update(station);
-		}
+		session.update(station);
 		session.getTransaction().commit();
 		session.close();
 		return station;
