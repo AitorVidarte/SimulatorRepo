@@ -69,34 +69,13 @@ public class PackageController extends Thread {
 			change = true;
 		}
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return change;
 
-	}
-
-	private void asignarPaquetesATrenes() {
-		Train train;
-		PackageDAO packageDAO = new PackageDAO();
-		for (Station station : resourcePool.getStations()) {
-			for (Package paquete : station.getSendPackageList()) {
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (!paquete.isAsignadoTren()) {
-					train = buscarTrenParaPaquete(paquete);
-					paquete.setTakeTrain(train);
-					paquete.setAsignadoTren(true);
-					packageDAO.add(paquete);
-				}
-			}
-		}
 	}
 
 	private int calcularDireccionPaquete(Package paquete) {
