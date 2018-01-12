@@ -30,8 +30,6 @@ public class TrainThread extends Thread {
 
 		while (true) {
 			
-			comprobarEstaciones();
-
 			if (moverse()) {
 				try {
 					System.out.println("Estacion:" +train.getStation().getDescription());
@@ -53,9 +51,22 @@ public class TrainThread extends Thread {
 					entrarEstacion();
 					soltarRail(train.getRail());
 				}
+			}else {
+				comprobarEstaciones();
+				descansar();
 			}
 
 		}
+	}
+
+	private void descansar() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void comprobarEstaciones() {
