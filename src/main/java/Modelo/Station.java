@@ -33,8 +33,8 @@ public class Station implements Serializable {
 	private Station nextStation;
 	@ManyToOne
 	private Station previousStation;
-	private int nextExitSwitch;
-	private int previousExitSwitch;
+	private int exitSwitch;
+	private int entrySwitch;
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Train> parks = new ArrayList<Train>();
@@ -54,14 +54,14 @@ public class Station implements Serializable {
 	}
 
 	public Station(int stationID, double coordinatesLat, double coordinatesLng, String description, int nextExitSwitch,
-			int previousExitSwitch, int nextEntrySwitch, int previousEntrySwitch, Station nextStation,
+			int previousExitSwitch, int exitSwitch, int entrySwitch, Station nextStation,
 			Station previousStation) {
 		this.stationID = stationID;
 		this.coordinatesLat = coordinatesLat;
 		this.coordinatesLng = coordinatesLng;
 		this.description = description;
-		this.nextExitSwitch = nextExitSwitch;
-		this.previousExitSwitch = previousExitSwitch;
+		this.exitSwitch = exitSwitch;
+		this.entrySwitch = entrySwitch;
 		this.nextStation = nextStation;
 		this.previousStation = previousStation;
 	}
@@ -98,20 +98,20 @@ public class Station implements Serializable {
 		this.previousStation = previousStation;
 	}
 
-	public int getNextExitSwitch() {
-		return nextExitSwitch;
+	public int getExitSwitch() {
+		return exitSwitch;
 	}
 
-	public void setNextExitSwitch(int nextExitSwitch) {
-		this.nextExitSwitch = nextExitSwitch;
+	public void setExitSwitch(int exitSwitch) {
+		this.exitSwitch = exitSwitch;
 	}
 
-	public int getPreviousExitSwitch() {
-		return previousExitSwitch;
+	public int getEntrySwitch() {
+		return entrySwitch;
 	}
 
-	public void setPreviousExitSwitch(int previousExitSwitch) {
-		this.previousExitSwitch = previousExitSwitch;
+	public void setEntrySwitch(int entrySwitch) {
+		this.entrySwitch = entrySwitch;
 	}
 
 	public Collection<Train> getParks() {
