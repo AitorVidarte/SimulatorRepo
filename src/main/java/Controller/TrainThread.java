@@ -188,11 +188,6 @@ public class TrainThread extends Thread {
 		}
 	}
 
-	public void ponerEnMarcha() {
-		this.getTrain().setOnGoing(true);
-		System.out.println("hilo!" + train.isOnGoing());
-	}
-
 	private void salirEstacion() {
 
 		for (Station station : resourcePool.getCircuito().getEstaciones() ) {

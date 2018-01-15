@@ -299,7 +299,7 @@ public class ResourcesPool {
 					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
 					+ +trains.get(i).getStation().getSendPackageList().size() + " paquetes para recoger!");
 		}
-		packageController = new PackageController(this,trainThreads);
+		packageController = new PackageController(this);
 	}
 
 	public void launchThreads() {
