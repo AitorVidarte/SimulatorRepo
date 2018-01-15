@@ -12,9 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import DAO.StationDAO;
 import Modelo.Train;
 
 @SuppressWarnings("serial")
@@ -27,16 +29,17 @@ public class Station implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private int stationID;
 	private String description;
 	@ManyToOne
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Station nextStation;
 	@ManyToOne
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Station previousStation;
-	private int nextExitSwitch;
-	private int previousExitSwitch;
-	private int nextEntrySwitch;
-	private int previousEntrySwitch;
+	private int exitSwitch;
+	private int entrySwitch;
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Train> parks = new ArrayList<Train>();
@@ -56,16 +59,14 @@ public class Station implements Serializable {
 	}
 
 	public Station(int stationID, double coordinatesLat, double coordinatesLng, String description, int nextExitSwitch,
-			int previousExitSwitch, int nextEntrySwitch, int previousEntrySwitch, Station nextStation,
+			int previousExitSwitch, int exitSwitch, int entrySwitch, Station nextStation,
 			Station previousStation) {
 		this.stationID = stationID;
 		this.coordinatesLat = coordinatesLat;
 		this.coordinatesLng = coordinatesLng;
 		this.description = description;
-		this.nextExitSwitch = nextExitSwitch;
-		this.previousExitSwitch = previousExitSwitch;
-		this.nextEntrySwitch = nextEntrySwitch;
-		this.previousEntrySwitch = previousEntrySwitch;
+		this.exitSwitch = exitSwitch;
+		this.entrySwitch = entrySwitch;
 		this.nextStation = nextStation;
 		this.previousStation = previousStation;
 	}
@@ -102,36 +103,20 @@ public class Station implements Serializable {
 		this.previousStation = previousStation;
 	}
 
-	public int getNextExitSwitch() {
-		return nextExitSwitch;
+	public int getExitSwitch() {
+		return exitSwitch;
 	}
 
-	public void setNextExitSwitch(int nextExitSwitch) {
-		this.nextExitSwitch = nextExitSwitch;
+	public void setExitSwitch(int exitSwitch) {
+		this.exitSwitch = exitSwitch;
 	}
 
-	public int getPreviousExitSwitch() {
-		return previousExitSwitch;
+	public int getEntrySwitch() {
+		return entrySwitch;
 	}
 
-	public void setPreviousExitSwitch(int previousExitSwitch) {
-		this.previousExitSwitch = previousExitSwitch;
-	}
-
-	public int getNextEntrySwitch() {
-		return nextEntrySwitch;
-	}
-
-	public void setNextEntrySwitch(int nextEntrySwitch) {
-		this.nextEntrySwitch = nextEntrySwitch;
-	}
-
-	public int getPreviousEntrySwitch() {
-		return previousEntrySwitch;
-	}
-
-	public void setPreviousEntrySwitch(int previousEntrySwitch) {
-		this.previousEntrySwitch = previousEntrySwitch;
+	public void setEntrySwitch(int entrySwitch) {
+		this.entrySwitch = entrySwitch;
 	}
 
 	public Collection<Train> getParks() {
@@ -199,8 +184,7 @@ public class Station implements Serializable {
 	}
 
 	public void quitarTren(Train train) {
-		// TODO Auto-generated method stub
-		//parks.remove(train);
+		this.parks.remove(train);
 	}
 
 	public void addNewPackageToSend(Package paquete) {
