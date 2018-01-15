@@ -11,15 +11,13 @@ public class PackageController extends Thread {
 	ResourcesPool resourcePool;
 	boolean paqueteCreado = false;
 	List<Package> listaPaquetes;
-	List<TrainThread> trainThreads;
 	PackageDAO packageDao = new PackageDAO();
 
 	private int nPackages = 0;
 
-	public PackageController(ResourcesPool resourcePool,List<TrainThread> trainThreads) {
+	public PackageController(ResourcesPool resourcePool) {
 		this.resourcePool = resourcePool;
 		listaPaquetes = new ArrayList<Package>();
-		this.trainThreads = trainThreads;
 	}
 
 	public void run() {

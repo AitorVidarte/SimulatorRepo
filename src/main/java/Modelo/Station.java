@@ -158,7 +158,8 @@ public class Station implements Serializable {
 	public void setDeliveredPackageList(Collection<Package> deliveredPackageList) {
 		this.deliveredPackageList = deliveredPackageList;
 	}
-
+	
+	//CAMBIAR ESTA MIERDA!!
 	public synchronized int obtenerPaking() {
 
 		int pos = 0;
@@ -188,12 +189,10 @@ public class Station implements Serializable {
 	}
 
 	public void addNewPackageToSend(Package paquete) {
-		// TODO Auto-generated method stub
 		sendPackageList.add(paquete);
 		
 	}
 	public void addDeliveredPackageList(Package paquete) {
-		// TODO Auto-generated method stub
 		deliveredPackageList.add(paquete);
 		
 	}
