@@ -38,6 +38,9 @@ public class Train implements Serializable {
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Package> packageList;
+//	@OneToMany
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	private Set<Package> historyPackageList;
 	private boolean onGoing;
 
 	public Train() {
@@ -48,6 +51,7 @@ public class Train implements Serializable {
 		this.station = station;
 		this.direction = direction;
 		this.packageList = new HashSet<Package>();
+		//this.historyPackageList = new  HashSet<Package>();
 		this.rail = new Rail();
 	}
 
@@ -101,4 +105,28 @@ public class Train implements Serializable {
 	public void addPackageList(Package paquete) {
 		packageList.add(paquete);
 	}
+
+	public boolean paquetesEntregados() {
+		boolean entregados = true;
+		
+		for (Package pack : this.getPackageList()) {
+			if (pack.getPackageState() != 2) {
+				entregados = false;
+			}
+		}
+		return entregados;
+	}
+
+//	public void addHistoryPackageList(Package paquete) {
+//		historyPackageList.add(paquete);
+//		
+//	}
+//
+//	public Set<Package> getHistoryPackageList() {
+//		return historyPackageList;
+//	}
+//
+//	public void setHistoryPackageList(Set<Package> historyPackageList) {
+//		this.historyPackageList = historyPackageList;
+//	}
 }
