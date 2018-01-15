@@ -107,6 +107,7 @@ public class ResourcesPool {
 				}
 			} else if (pack.getPackageState() == 2) {
 				station = pack.getDestination();
+//				asignarPaqueteATrenHistorico(pack);
 				for (Station stat : stations) {
 					if (stat.getStationID() == station.getStationID()) {
 						stat.addDeliveredPackageList(pack);
@@ -119,6 +120,19 @@ public class ResourcesPool {
 		circuito.setEstaciones(stations);
 	}
 	
+//	private void asignarPaqueteATrenHistorico(Package pack) {
+//		
+//		for (TrainThread trainThread : trainThreads) {
+//			if (trainThread.getTrain().getTrainID() == pack.getTakeTrain().getTrainID()) {
+//				trainThread.getTrain().addHistoryPackageList(pack);
+//				actualizarPaquete(pack);
+//				acutalizarTren(trainThread.getTrain());
+//				
+//			}
+//		}
+//		
+//	}
+
 	public void asignarPaquetesAEstaciones(List<Package> packages) {
 
 		Station station = null;
@@ -372,5 +386,9 @@ public class ResourcesPool {
 
 	public void acutalizarEstacion(Station station) {
 		stationDao.edit(station);	
+	}
+
+	public void actualizarRail(Rail rail) {
+		railDao.edit(rail);
 	}
 }

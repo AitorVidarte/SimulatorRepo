@@ -28,7 +28,6 @@ public class Circuito {
 	}
 
 	public synchronized Rail cogerRail(Rail rail) {
-		RailDAO railDao = new RailDAO();
 		System.out.println("Entra Coger Rail");
 		while (rail.isOccupied()) {
 			
@@ -39,17 +38,12 @@ public class Circuito {
 			}
 		}
 		rail.setOccupied(true);
-		railDao.edit(rail);
 		return rail;
 	}
 
 	public synchronized void soltarRail(Rail rail) {
-
-		RailDAO railDao = new RailDAO();
 		rail.setOccupied(false);
-		railDao.edit(rail);
 		notify();
-
 	}
 	public List<Station> getEstaciones(){
 		return estaciones;

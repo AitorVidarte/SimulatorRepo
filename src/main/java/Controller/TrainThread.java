@@ -82,7 +82,7 @@ public class TrainThread extends Thread {
 
 	private void comprobarSiTieneQueParar() {
 		
-		if (train.getPackageList().size() == 0 && tengoPaquetesPorRecoger()) {
+		if (train.paquetesEntregados() && tengoPaquetesPorRecoger()) {
 			train.setOnGoing(false);
 			resourcePool.acutalizarTren(train);
 		}
@@ -124,7 +124,7 @@ public class TrainThread extends Thread {
 			}
 			if (paquete.getTakeTrain().getTrainID() == train.getTrainID()) {
 				paquete.setPackageState(1);
-				paquete.setTakeTrain(null);
+				//paquete.setTakeTrain(null);
 				resourcePool.actualizarPaquete(paquete);
 				train.addPackageList(paquete);
 				resourcePool.acutalizarTren(train);
@@ -158,7 +158,9 @@ public class TrainThread extends Thread {
 				paquete.setPackageState(2);
 				train.getStation().addDeliveredPackageList(paquete);
 				resourcePool.actualizarPaquete(paquete);
-				itTrainPackages.remove();
+				//train.addHistoryPackageList(paquete);
+				resourcePool.acutalizarTren(train);
+				//itTrainPackages.remove();
 				System.out.println("Paquete entregado!");
 				
 			} 
@@ -173,6 +175,7 @@ public class TrainThread extends Thread {
 						&& (train.getStation().getNextStation().getDescription()
 								.equals(rail.getNextStation().getDescription()))) {
 					resourcePool.getCircuito().cogerRail(rail);
+					resourcePool.actualizarRail(rail);
 					train.setRail(rail);
 					// System.out.println("Rail: " + train.getRail().getRailID());
 				}
@@ -195,9 +198,10 @@ public class TrainThread extends Thread {
 		for (Station station : resourcePool.getCircuito().getEstaciones() ) {
 			
 			if (station.getStationID() == train.getTrainID()) {
-
+			
 				station.quitarTren(train);
 				resourcePool.acutalizarTren(train);
+				//resourcePool.acutalizarEstacion(station);
 				//resourcePool.actualizarTodo();
 				//resourcePool.acutalizarEstacion(station);
 				//stationDao.edit(station);	
@@ -241,8 +245,10 @@ public class TrainThread extends Thread {
 
 	private void soltarRail(Rail rail) {
 		resourcePool.getCircuito().soltarRail(rail);
+		resourcePool.actualizarRail(rail);
 		train.setRail(null);
 		resourcePool.acutalizarTren(train);
+		
 	}
 
 	private boolean moverse() {
