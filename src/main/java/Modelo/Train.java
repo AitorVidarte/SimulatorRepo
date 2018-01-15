@@ -116,17 +116,4 @@ public class Train implements Serializable {
 		}
 		return entregados;
 	}
-
-//	public void addHistoryPackageList(Package paquete) {
-//		historyPackageList.add(paquete);
-//		
-//	}
-//
-//	public Set<Package> getHistoryPackageList() {
-//		return historyPackageList;
-//	}
-//
-//	public void setHistoryPackageList(Set<Package> historyPackageList) {
-//		this.historyPackageList = historyPackageList;
-//	}
 }
