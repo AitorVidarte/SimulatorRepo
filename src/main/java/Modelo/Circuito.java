@@ -9,6 +9,8 @@ public class Circuito {
 
 	List<Rail> railes;
 	List<Station> estaciones;
+	
+	static boolean usingStations[]= {false,false,false,false,false,false};
 
 	public Circuito() {
 
@@ -49,13 +51,37 @@ public class Circuito {
 		notify();
 
 	}
-
-	public List<Station> getEstaciones() {
+	public List<Station> getEstaciones(){
 		return estaciones;
 	}
 
+	
 	public void setEstaciones(List<Station> stations) {
 		this.estaciones = stations;
+	}
+
+	public synchronized Station reservarEstacion(int index,boolean using) {
+		
+		if (usingStations[index] == false) {
+			usingStations[index] = using;
+		}
+		else  {
+			try {
+				System.out.println("Tren bloqueado! EStacion!ª!!! ");
+				Thread.sleep(10000);
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return estaciones.get(index);
+	}
+
+	
+	public synchronized void despertarTrenes(int index) {
+		usingStations[index] = false;
+		notify();
+		
 	}
 
 }

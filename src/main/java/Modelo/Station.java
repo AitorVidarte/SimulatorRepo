@@ -12,9 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import DAO.StationDAO;
 import Modelo.Train;
 
 @SuppressWarnings("serial")
@@ -27,11 +29,14 @@ public class Station implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private int stationID;
 	private String description;
 	@ManyToOne
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Station nextStation;
 	@ManyToOne
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Station previousStation;
 	private int exitSwitch;
 	private int entrySwitch;
@@ -179,8 +184,7 @@ public class Station implements Serializable {
 	}
 
 	public void quitarTren(Train train) {
-		// TODO Auto-generated method stub
-		//parks.remove(train);
+		this.parks.remove(train);
 	}
 
 	public void addNewPackageToSend(Package paquete) {

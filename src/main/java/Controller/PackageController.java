@@ -36,26 +36,10 @@ public class PackageController extends Thread {
 		while (true) {
 			if (mirarPaquetesEnBaseDeDatos()) {
 				listaPaquetes = cogerPaqutes();
-				asignarPaquetesAEstacion();
+				asignarPaquetes();
 				//ponerTrenEnMarcha()
 			}
 		}
-	}
-
-	private void asignarPaquetesAEstacion() {
-		StationDAO stationDao = new StationDAO();
-		System.out.println(listaPaquetes.size());
-		for (Package paquete : listaPaquetes) {
-			paquete.setPackageState(0);
-			packageDao.edit(paquete);
-			resourcePool.getCircuito().getEstaciones().get(0).addNewPackageToSend(paquete);
-		}
-
-	}
-
-	private List<Package> cogerPaqutes() {
-		PackageDAO packageDao = new PackageDAO();
-		return packageDao.toSendPackageListInBBDD();
 	}
 
 	private boolean mirarPaquetesEnBaseDeDatos() {
@@ -77,6 +61,39 @@ public class PackageController extends Thread {
 		return change;
 
 	}
+	private void asignarPaquetes() {
+		listaPaquetes.size();
+		for (Package pack : listaPaquetes) {
+				pack.setPackageState(0);
+				resourcePool.actualizarPaquete(pack);
+		}
+		
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		resourcePool.asignarPaquetesAEstaciones(listaPaquetes);
+		resourcePool.asignarTrenAPaquete(listaPaquetes);
+		
+//		System.out.println(listaPaquetes.size());
+//		for (Package paquete : listaPaquetes) {
+//			paquete.setPackageState(0);
+//			packageDao.edit(paquete);
+//			resourcePool.getCircuito().getEstaciones().get(0).addNewPackageToSend(paquete);
+//				
+//		}
+
+	}
+
+	private List<Package> cogerPaqutes() {
+		PackageDAO packageDao = new PackageDAO();
+		return packageDao.toSendPackageListInBBDD();
+	}
+
+
 
 	private int calcularDireccionPaquete(Package paquete) {
 		if (distanciaEntreEstaciones(paquete.getOrigin(), paquete.getDestination(),

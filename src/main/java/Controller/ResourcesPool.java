@@ -20,6 +20,7 @@ public class ResourcesPool {
 	final static int TRAINNUMBER = 6;
 	
 	List<TrainThread> trainThreads;
+	
 	List<Train> trains;
 	List<Station> stations;
 	List<Rail> rails;
@@ -78,7 +79,6 @@ public class ResourcesPool {
 			railDao.edit(rail);
 		}
 
-		circuito.setEstaciones(stations);
 		circuito.setRailes(rails);
 		
 		 
@@ -101,6 +101,8 @@ public class ResourcesPool {
 				for (Station stat : stations) {
 					if (stat.getStationID() == station.getStationID()) {
 						stat.addNewPackageToSend(pack);
+						stat.addDeliveredPackageList(new Package());
+						stationDao.edit(station);
 					}
 				}
 			} else if (pack.getPackageState() == 2) {
@@ -108,12 +110,93 @@ public class ResourcesPool {
 				for (Station stat : stations) {
 					if (stat.getStationID() == station.getStationID()) {
 						stat.addDeliveredPackageList(pack);
+						stationDao.edit(station);
 					}
 				}
 			}
 
 		}
 		circuito.setEstaciones(stations);
+	}
+	
+	public void asignarPaquetesAEstaciones(List<Package> packages) {
+
+		Station station = null;
+		for (Package pack : packages) {
+
+			if (pack.getPackageState() == 0) {
+
+				station = pack.getOrigin();
+				for (Station stat : stations) {
+					if (stat.getStationID() == station.getStationID()) {
+						stat.addNewPackageToSend(pack);
+						stat.addDeliveredPackageList(new Package());
+						stationDao.edit(station);
+					}
+				}
+			} else if (pack.getPackageState() == 2) {
+				station = pack.getDestination();
+				for (Station stat : stations) {
+					if (stat.getStationID() == station.getStationID()) {
+						stat.addDeliveredPackageList(pack);
+						stationDao.edit(station);
+					}
+				}
+			}
+
+		}
+		circuito.setEstaciones(stations);
+	}
+	
+//Cambiar funcion
+	
+	public void asignarTrenAPaquete(List<Package> packages) {
+		int elMejor = 6, distancia;
+		TrainThread trainMejor = null;
+		
+		for (Package pack : packages) {
+			elMejor = 6;
+			trainMejor = null;
+			if (pack.getTakeTrain() == null && pack.getPackageState() == 0) {
+				
+				System.out.println("Paquete "+pack.getDescription()+" Dir: "+calcularDireccionPaquete(pack));
+				for ( TrainThread trainsMoving : getTrenesEnUnaDireccionMoviendo(calcularDireccionPaquete(pack))){
+					distancia = distanciaEntreEstaciones(trainsMoving.getTrain().getStation(), pack.getOrigin(),trainsMoving.getTrain().getDirection());
+					
+					if (distancia < elMejor) {
+						elMejor = distancia;
+						trainMejor = trainsMoving;
+						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
+						pack.setTakeTrain(trainMejor.getTrain());
+						packageDao.edit(pack);	
+					}
+				}
+				if (trainMejor == null) {
+					for (TrainThread trainStoped : getTrenesEnUnaDireccion(calcularDireccionPaquete(pack))) {
+						distancia = distanciaEntreEstaciones(trainStoped.getTrain().getStation(), pack.getOrigin(),trainStoped.getTrain().getDirection());
+						
+						System.out.println("###"+trainStoped.getTrain().getStation().getStationID()+pack.getOrigin().getStationID());
+						
+						if (trainStoped.getTrain().getStation().getStationID() == pack.getOrigin().getStationID()) {
+							trainMejor = trainStoped;
+						}
+						else {
+							if (distancia < elMejor) {
+								elMejor = distancia;
+								trainMejor = trainStoped;
+								pack.setTakeTrain(trainMejor.getTrain());
+								packageDao.edit(pack);
+							}
+						}
+						
+					}
+					trainMejor.getTrain().setOnGoing(true);
+					trainDao.edit(trainMejor.getTrain());
+				}
+				
+			}
+			
+		}	
 	}
 	
 	private void asignarTrenAPaquete() {
@@ -227,7 +310,7 @@ public class ResourcesPool {
 		// packageController = new PackageController(this);
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			
-			trainThreads.add(new TrainThread(trains.get(i), circuito,this));
+			trainThreads.add(new TrainThread(trains.get(i),this));
 			
 			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
 					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
@@ -277,6 +360,17 @@ public class ResourcesPool {
 		Train train = trainThreads.get(i-1).getTrain();
 		train.setOnGoing(false);
 		//trainDao.edit(train, train.getTrainID()-1);
-		
+	}
+
+	public void actualizarPaquete(Package paquete) {
+		packageDao.edit(paquete);
+	}
+
+	public void acutalizarTren(Train train) {
+		trainDao.edit(train);	
+	}
+
+	public void acutalizarEstacion(Station station) {
+		stationDao.edit(station);	
 	}
 }
