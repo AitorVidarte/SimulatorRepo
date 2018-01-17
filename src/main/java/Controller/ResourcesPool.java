@@ -44,7 +44,7 @@ public class ResourcesPool {
 	}
 
 	// leyendo los datos de la base de datos y creando objetos( trenes,paquetes, railes y estaciones)
-	public void iniciarCircuito() {
+	public void iniciarCircuitoDesdeBBDD() {
 
 		this.stations = stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
@@ -107,7 +107,6 @@ public class ResourcesPool {
 				}
 			} else if (pack.getPackageState() == 2) {
 				station = pack.getDestination();
-//				asignarPaqueteATrenHistorico(pack);
 				for (Station stat : stations) {
 					if (stat.getStationID() == station.getStationID()) {
 						stat.addDeliveredPackageList(pack);
@@ -292,7 +291,6 @@ public class ResourcesPool {
 	}
 
 	public void createThreads() {
-		// packageController = new PackageController(this);
 		for (int i = 0; i < TRAINNUMBER; i++) {
 			
 			trainThreads.add(new TrainThread(trains.get(i),this));
@@ -300,13 +298,8 @@ public class ResourcesPool {
 			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
 					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
 					+ +trains.get(i).getStation().getSendPackageList().size() + " paquetes para recoger!");
-
-//			for (Package pack : trains.get(i).getStation().getSendPackageList()) {
-//				System.out.println("Paquete: " + pack.getDescription() + pack.getPackageID()
-//						+ " tiene que ser secogido por el tren: " + pack.getTakeTrain().getTrainID());
-//			}
 		}
-		packageController = new PackageController(this,trainThreads);
+		packageController = new PackageController(this);
 	}
 
 	public void launchThreads() {
@@ -329,21 +322,7 @@ public class ResourcesPool {
 	}
 
 	public List<TrainThread> getTrainThreads() {
-		// TODO Auto-generated method stub
 		return trainThreads;
-	}
-
-	public void ponThreadenMarcha(int i) {
-		Train train = trainThreads.get(i-1).getTrain();
-		train.setOnGoing(true);
-		//trainDao.edit(train, train.getTrainID()-1);
-		
-	}
-	
-	public void pararThreadenMarcha(int i) {
-		Train train = trainThreads.get(i-1).getTrain();
-		train.setOnGoing(false);
-		//trainDao.edit(train, train.getTrainID()-1);
 	}
 
 	public void actualizarPaquete(Package paquete) {
