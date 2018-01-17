@@ -291,12 +291,7 @@ public class ResourcesPool {
 
 	public void createThreads() {
 		for (int i = 0; i < TRAINNUMBER; i++) {
-			
 			trainThreads.add(new TrainThread(trains.get(i),this));
-			
-			System.out.println("El Tren:" + trains.get(i).getTrainID() + " esta en la estacion: "
-					+ trains.get(i).getStation().getDescription() + "" + " y la estacion tiene "
-					+ +trains.get(i).getStation().getSendPackageList().size() + " paquetes para recoger!");
 		}
 		packageController = new PackageController(this);
 	}

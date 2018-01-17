@@ -20,19 +20,6 @@ public class RailDAO {
 	session.close();
 	return rail;
     }
-
-    // For deleting item from Package table.
-    public Rail delete(int id) {
-	Session session = HibernateUtil.createSessionFactory();
-	session.beginTransaction();
-	Rail rail = session.get(Rail.class, id);
-	if (rail != null) {
-	    session.delete(rail);
-	}
-	session.getTransaction().commit();
-	session.close();
-	return rail;
-    }
     
     public void edit(Rail rail) {
 		Session session = HibernateUtil.createSessionFactory();
@@ -51,7 +38,6 @@ public class RailDAO {
 	List<Rail> rails = null;
 	try {
 	    rails = (List<Rail>) session.createQuery("from Rail").list();
-
 	} catch (HibernateException e) {
 	    e.printStackTrace();
 	    session.getTransaction().rollback();

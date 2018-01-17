@@ -12,28 +12,6 @@ import hibernate.HibernateUtil;
 
 public class TrainDAO {
 	SessionFactory sessionFactory;
-	// For adding items in the Train table.
-	public Train add(Train train) {
-		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		session.save(train);
-		session.getTransaction().commit();
-		session.close();
-		return train;
-	}
-
-	// For deleting item from Train table.
-	public Train delete(int id) {
-		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Train train = (Train) session.load(Train.class, id);
-		if (null != train) {
-			session.delete(train);
-		}
-		session.getTransaction().commit();
-		session.close();
-		return train;
-	}
 
 	public void edit(Train train) {
 		Session session = HibernateUtil.createSessionFactory();

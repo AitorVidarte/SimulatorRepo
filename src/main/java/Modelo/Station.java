@@ -170,7 +170,6 @@ public class Station implements Serializable {
 		}
 		if (pos == 4) {
 			try {
-				System.out.println("Tren bloqueado!");
 				wait();
 
 			} catch (InterruptedException e) {

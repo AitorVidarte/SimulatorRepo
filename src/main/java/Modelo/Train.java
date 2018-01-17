@@ -38,9 +38,6 @@ public class Train implements Serializable {
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Package> packageList;
-//	@OneToMany
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	private Set<Package> historyPackageList;
 	private boolean onGoing;
 
 	public Train() {
@@ -51,7 +48,6 @@ public class Train implements Serializable {
 		this.station = station;
 		this.direction = direction;
 		this.packageList = new HashSet<Package>();
-		//this.historyPackageList = new  HashSet<Package>();
 		this.rail = new Rail();
 	}
 

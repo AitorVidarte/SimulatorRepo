@@ -2,6 +2,7 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import DAO.PackageDAO;
 import Modelo.Package;
@@ -12,7 +13,7 @@ public class PackageController extends Thread {
 	boolean paqueteCreado = false;
 	List<Package> listaPaquetes;
 	PackageDAO packageDao = new PackageDAO();
-
+	
 	private int nPackages = 0;
 
 	public PackageController(ResourcesPool resourcePool) {
@@ -33,50 +34,30 @@ public class PackageController extends Thread {
 
 	private void descansar() {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(20000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
-		
+
 	}
 
 	private boolean mirarPaquetesEnBaseDeDatos() {
-		// TODO Auto-generated method stub
 		boolean change = false;
-		PackageDAO packageDao = new PackageDAO();
 		List<Package> paquetes = packageDao.toSendPackageListInBBDD();
 		if (nPackages != paquetes.size()) {
-			System.out.println("ok");
 			setnPackages(paquetes.size());
 			change = true;
-		}
-		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return change;
 
 	}
-	
-private void asignarPaquetes() {
-		listaPaquetes.size();
+
+	private void asignarPaquetes() {
 		for (Package pack : listaPaquetes) {
-				pack.setPackageState(0);
-				resourcePool.actualizarPaquete(pack);
+			pack.setPackageState(0);
+			resourcePool.actualizarPaquete(pack);
 		}
-		
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		resourcePool.asignarPaquetesAEstacionesPackageController(listaPaquetes);
 		resourcePool.asignarTrenAPaquetePackageController(listaPaquetes);
-
 	}
 
 	private List<Package> cogerPaqutes() {

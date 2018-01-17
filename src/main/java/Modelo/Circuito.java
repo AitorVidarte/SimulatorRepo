@@ -13,10 +13,8 @@ public class Circuito {
 	static boolean usingStations[]= {false,false,false,false,false,false};
 
 	public Circuito() {
-
 		railes = new ArrayList<Rail>();
 		estaciones = new ArrayList<Station>();
-
 	}
 
 	public List<Rail> getRailes() {
@@ -28,11 +26,9 @@ public class Circuito {
 	}
 
 	public synchronized Rail cogerRail(Rail rail) {
-		System.out.println("Entra Coger Rail");
 		while (rail.isOccupied()) {
 			
 			try {
-				System.out.println("bloqueo");
 				wait();
 			} catch (InterruptedException e) {
 			}
@@ -63,8 +59,6 @@ public class Circuito {
 		}
 		else  {
 			try {
-				System.out.println("Tren bloqueado! EStacion!ª!!! ");
-				Thread.sleep(10000);
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
