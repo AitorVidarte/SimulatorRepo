@@ -85,7 +85,6 @@ public class ResourcesPool {
 		asignarPaquetesAEstaciones(); // asignados los objetos paquete leidos de la base de datos a los objetos estacion.
 		createThreads();// creando los hilos tipo Tren pasandole el tren y el circuito.
 		asignarTrenAPaquete();
-		//mostrarDatos();
 		launchThreads();// lanzando los hilos!
 
 	}
