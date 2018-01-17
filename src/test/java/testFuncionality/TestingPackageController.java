@@ -1,7 +1,7 @@
 package testFuncionality;
 
 
-public class TestingPackageController {
 
+public class TestingPackageController {
 	
 }
