@@ -45,15 +45,17 @@ public class Circuito {
 		rail.setOccupied(false);
 		notify();
 	}
+	
 	public List<Station> getEstaciones(){
 		return estaciones;
 	}
 
-	
 	public void setEstaciones(List<Station> stations) {
 		this.estaciones = stations;
 	}
 
+	
+	//Mirar.... Darle una vuelta.
 	public synchronized Station reservarEstacion(int index,boolean using) {
 		
 		if (usingStations[index] == false) {

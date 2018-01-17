@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DAO.PackageDAO;
-import DAO.StationDAO;
-import Modelo.Station;
-import Modelo.Train;
 import Modelo.Package;
 
 public class PackageController extends Thread {
@@ -14,32 +11,34 @@ public class PackageController extends Thread {
 	ResourcesPool resourcePool;
 	boolean paqueteCreado = false;
 	List<Package> listaPaquetes;
-	List<TrainThread> trainThreads;
 	PackageDAO packageDao = new PackageDAO();
 
-	@SuppressWarnings("unused")
 	private int nPackages = 0;
 
-	public PackageController(ResourcesPool resourcePool,List<TrainThread> trainThreads) {
+	public PackageController(ResourcesPool resourcePool) {
 		this.resourcePool = resourcePool;
 		listaPaquetes = new ArrayList<Package>();
-		this.trainThreads = trainThreads;
 	}
 
 	public void run() {
 
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		while (true) {
+			descansar();
 			if (mirarPaquetesEnBaseDeDatos()) {
 				listaPaquetes = cogerPaqutes();
 				asignarPaquetes();
 				//ponerTrenEnMarcha()
 			}
 		}
+	}
+
+	private void descansar() {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private boolean mirarPaquetesEnBaseDeDatos() {
