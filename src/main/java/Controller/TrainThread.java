@@ -108,7 +108,14 @@ public class TrainThread extends Thread {
 
 		while (itTrainPackages.hasNext()) {
 			paquete = itTrainPackages.next();
-
+			
+			try {
+				System.out.println("El tren tiene: "+train.getPackageList().size()+" paquetes y la estacion :"+train.getStation().getSendPackageList().size());
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			if (paquete.getDestination().getStationID() == train.getStation().getStationID()) {
 				paquete.setPackageState(2);
 				train.getStation().addDeliveredPackageList(paquete);
@@ -167,10 +174,21 @@ public class TrainThread extends Thread {
 		for (int i = 0; i <= 100; i += 10) {
 			pidiendoRail();
 			if (i == 90) {
-				pidiendoRail();
+				try {
+					System.out.println("Pidiendo parking a la estacion!");
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-	}
+			try {
+				Thread.sleep(100);
+				System.out.print(i + "%  ");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	private void pidiendoRail() {
 		try {
