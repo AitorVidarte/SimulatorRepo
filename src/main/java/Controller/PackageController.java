@@ -22,18 +22,23 @@ public class PackageController extends Thread {
 
 	public void run() {
 
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		while (true) {
+			descansar();
 			if (mirarPaquetesEnBaseDeDatos()) {
 				listaPaquetes = cogerPaqutes();
 				asignarPaquetes();
 				//ponerTrenEnMarcha()
 			}
 		}
+	}
+
+	private void descansar() {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private boolean mirarPaquetesEnBaseDeDatos() {
