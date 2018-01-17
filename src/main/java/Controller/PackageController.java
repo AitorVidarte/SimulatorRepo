@@ -27,7 +27,6 @@ public class PackageController extends Thread {
 			if (mirarPaquetesEnBaseDeDatos()) {
 				listaPaquetes = cogerPaqutes();
 				asignarPaquetes();
-				//ponerTrenEnMarcha()
 			}
 		}
 	}
