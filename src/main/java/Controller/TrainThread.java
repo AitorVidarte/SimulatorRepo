@@ -12,7 +12,6 @@ public class TrainThread extends Thread {
 	ResourcesPool resourcePool;
 
 	public TrainThread(Train train, ResourcesPool resource) {
-		System.out.println("Tren creado en la estacion:" + train.getStation().getDescription() + train.isOnGoing());
 		this.train = train;
 		this.resourcePool = resource;
 		

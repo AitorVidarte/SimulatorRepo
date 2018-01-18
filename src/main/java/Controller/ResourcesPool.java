@@ -152,44 +152,50 @@ public class ResourcesPool {
 //Cambiar funcion
 	
 	public void asignarTrenAPaquetePackageController(List<Package> packages) {
-		int elMejor = 6, distancia;
-		TrainThread trainMejor = null;
+		int elMejor = 6, distancia,dir=0;
+		TrainThread trainMejor = new TrainThread(new Train(),this);
+		boolean trenAsignado = false;
 		
 		for (Package pack : packages) {
 			elMejor = 6;
-			trainMejor = null;
+			trainMejor = new TrainThread(new Train(),this);
+			
+			dir = calcularDireccionPaquete(pack);
+			
 			if (pack.getTakeTrain() == null && pack.getPackageState() == 0) {
 				
-				System.out.println("Paquete "+pack.getDescription()+" Dir: "+calcularDireccionPaquete(pack));
-				for ( TrainThread trainsMoving : getTrenesEnUnaDireccionMoviendo(calcularDireccionPaquete(pack))){
-					distancia = distanciaEntreEstaciones(trainsMoving.getTrain().getStation(), pack.getOrigin(),trainsMoving.getTrain().getDirection());
-					
-					if (distancia < elMejor) {
-						elMejor = distancia;
-						trainMejor = trainsMoving;
-						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
-						pack.setTakeTrain(trainMejor.getTrain());
-						packageDao.edit(pack);	
-					}
-				}
-				if (trainMejor == null) {
-					for (TrainThread trainStoped : getTrenesEnUnaDireccion(calcularDireccionPaquete(pack))) {
-						distancia = distanciaEntreEstaciones(trainStoped.getTrain().getStation(), pack.getOrigin(),trainStoped.getTrain().getDirection());
+				System.out.println("Paquete "+pack.getDescription()+" Dir: "+dir);
+				
+				for ( TrainThread trainMoving : getTrenesEnUnaDireccionMoviendo()){
+					if (trainMoving.getTrain().getDirection() == dir) {
 						
-						System.out.println("###"+trainStoped.getTrain().getStation().getStationID()+pack.getOrigin().getStationID());
+						distancia = distanciaEntreEstaciones(trainMoving.getTrain().getStation(), pack.getOrigin(),trainMoving.getTrain().getDirection());
 						
-						if (trainStoped.getTrain().getStation().getStationID() == pack.getOrigin().getStationID()) {
-							trainMejor = trainStoped;
+						if (distancia < elMejor) {
+							elMejor = distancia;
+							trainMejor = trainMoving;
+							pack.setTakeTrain(trainMejor.getTrain());
+							packageDao.edit(pack);	
+							trenAsignado = true;
 						}
-						else {
+						
+					}
+					
+					
+				}
+				if (!trenAsignado) {
+					for (TrainThread trainStoped : getTrenesEnUnaDireccionParados()) {
+						if (trainStoped.getTrain().getDirection() == dir) {
+							distancia = distanciaEntreEstaciones(trainStoped.getTrain().getStation(), pack.getOrigin(),trainStoped.getTrain().getDirection());
+
 							if (distancia < elMejor) {
 								elMejor = distancia;
 								trainMejor = trainStoped;
 								pack.setTakeTrain(trainMejor.getTrain());
 								packageDao.edit(pack);
 							}
+							
 						}
-						
 					}
 					trainMejor.getTrain().setOnGoing(true);
 					trainDao.edit(trainMejor.getTrain());
@@ -201,44 +207,50 @@ public class ResourcesPool {
 	}
 	
 	private void asignarTrenAPaquete() {
-		int elMejor = 6, distancia;
-		TrainThread trainMejor = null;
+		int elMejor = 6, distancia,dir=0;
+		TrainThread trainMejor = new TrainThread(new Train(),this);
+		boolean trenAsignado = false;
 		
 		for (Package pack : packages) {
 			elMejor = 6;
-			trainMejor = null;
+			trainMejor = new TrainThread(new Train(),this);
+			
+			dir = calcularDireccionPaquete(pack);
+			
 			if (pack.getTakeTrain() == null && pack.getPackageState() == 0) {
 				
-				System.out.println("Paquete "+pack.getDescription()+" Dir: "+calcularDireccionPaquete(pack));
-				for ( TrainThread trainsMoving : getTrenesEnUnaDireccionMoviendo(calcularDireccionPaquete(pack))){
-					distancia = distanciaEntreEstaciones(trainsMoving.getTrain().getStation(), pack.getOrigin(),trainsMoving.getTrain().getDirection());
-					
-					if (distancia < elMejor) {
-						elMejor = distancia;
-						trainMejor = trainsMoving;
-						System.out.println("###Mejor tren: "+trainMejor.getTrain().getTrainID()+" para paquete "+ pack.getDescription());
-						pack.setTakeTrain(trainMejor.getTrain());
-						packageDao.edit(pack);	
-					}
-				}
-				if (trainMejor == null) {
-					for (TrainThread trainStoped : getTrenesEnUnaDireccion(calcularDireccionPaquete(pack))) {
-						distancia = distanciaEntreEstaciones(trainStoped.getTrain().getStation(), pack.getOrigin(),trainStoped.getTrain().getDirection());
+				System.out.println("Paquete "+pack.getDescription()+" Dir: "+dir);
+				
+				for ( TrainThread trainMoving : getTrenesEnUnaDireccionMoviendo()){
+					if (trainMoving.getTrain().getDirection() == dir) {
 						
-						System.out.println("###"+trainStoped.getTrain().getStation().getStationID()+pack.getOrigin().getStationID());
+						distancia = distanciaEntreEstaciones(trainMoving.getTrain().getStation(), pack.getOrigin(),trainMoving.getTrain().getDirection());
 						
-						if (trainStoped.getTrain().getStation().getStationID() == pack.getOrigin().getStationID()) {
-							trainMejor = trainStoped;
+						if (distancia < elMejor) {
+							elMejor = distancia;
+							trainMejor = trainMoving;
+							pack.setTakeTrain(trainMejor.getTrain());
+							packageDao.edit(pack);	
+							trenAsignado = true;
 						}
-						else {
+						
+					}
+					
+					
+				}
+				if (!trenAsignado) {
+					for (TrainThread trainStoped : getTrenesEnUnaDireccionParados()) {
+						if (trainStoped.getTrain().getDirection() == dir) {
+							distancia = distanciaEntreEstaciones(trainStoped.getTrain().getStation(), pack.getOrigin(),trainStoped.getTrain().getDirection());
+
 							if (distancia < elMejor) {
 								elMejor = distancia;
 								trainMejor = trainStoped;
 								pack.setTakeTrain(trainMejor.getTrain());
 								packageDao.edit(pack);
 							}
+							
 						}
-						
 					}
 					trainMejor.getTrain().setOnGoing(true);
 					trainDao.edit(trainMejor.getTrain());
@@ -271,20 +283,21 @@ public class ResourcesPool {
 		return i;
 	}
 
-	public ArrayList<TrainThread> getTrenesEnUnaDireccion(int direccion) {
+	public ArrayList<TrainThread> getTrenesEnUnaDireccionParados() {
 		ArrayList<TrainThread> trainsDirection = new ArrayList<TrainThread>();
 		for (TrainThread trainThread : trainThreads) {
-			if (trainThread.getTrain().getDirection() == direccion) {
+			if (!trainThread.getTrain().isOnGoing()) {
 				trainsDirection.add(trainThread);
 			}
 		}
 		return trainsDirection;
 	}
 
-	public ArrayList<TrainThread> getTrenesEnUnaDireccionMoviendo(int direccion) {
-		ArrayList<TrainThread> trainsDirection = new ArrayList<TrainThread>();
+	public List<TrainThread> getTrenesEnUnaDireccionMoviendo() {
+		List<TrainThread> trainsDirection = new ArrayList<TrainThread>();
+		
 		for (TrainThread trainThread : trainThreads) {
-			if (trainThread.getTrain().getDirection() == direccion && trainThread.getTrain().isOnGoing()) {
+			if (trainThread.getTrain().isOnGoing()) {
 				trainsDirection.add(trainThread);
 			}
 		}

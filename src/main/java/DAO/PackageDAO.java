@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.sonarsource.scanner.api.internal.cache.Logger;
 
 import Modelo.Package;
-
 import hibernate.HibernateUtil;
 
 public class PackageDAO {

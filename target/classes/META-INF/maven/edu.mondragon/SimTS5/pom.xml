@@ -38,7 +38,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.host.url>
-                  http://192.168.1.39:9000
+                  http://10.209.252.18:9000
         </sonar.host.url>
 	</properties>
 </project>
