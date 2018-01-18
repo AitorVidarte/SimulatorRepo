@@ -17,6 +17,7 @@
 			<groupId>org.sonarsource.scanner.maven</groupId>
 			<artifactId>sonar-maven-plugin</artifactId>
 			<version>3.2</version>
+			
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -36,5 +37,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<sonar.host.url>
+                  http://192.168.1.39:9000
+        </sonar.host.url>
 	</properties>
 </project>

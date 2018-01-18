@@ -3,8 +3,6 @@ package Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.RailDAO;
-
 public class Circuito {
 
 	List<Rail> railes;

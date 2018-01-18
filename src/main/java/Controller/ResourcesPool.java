@@ -3,6 +3,8 @@ package Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sonarsource.scanner.api.internal.cache.Logger;
+
 import DAO.PackageDAO;
 import DAO.RailDAO;
 import DAO.StationDAO;
@@ -33,6 +35,7 @@ public class ResourcesPool {
 	TrainDAO trainDao = new TrainDAO();
 	RailDAO railDao = new RailDAO();
 	PackageDAO packageDao = new PackageDAO();
+	Logger logger;
 	
 	public ResourcesPool() {
 		stations = new ArrayList<Station>();
@@ -75,7 +78,6 @@ public class ResourcesPool {
 		rails.add(new Rail(12,stations.get(2),stations.get(1),false));
 		
 		for (Rail rail: rails) {
-			System.out.println("Rai: "+rail.getRailID()+" estacion anterior: "+rail.getPreviousStation().getStationID()+" siguiente estacion: "+ rail.getNextStation().getStationID());
 			railDao.edit(rail);
 		}
 

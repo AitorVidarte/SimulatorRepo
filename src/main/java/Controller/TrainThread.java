@@ -1,7 +1,6 @@
 package Controller;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 import Modelo.Rail;
 import Modelo.Station;
 import Modelo.Train;
@@ -11,7 +10,6 @@ public class TrainThread extends Thread {
 
 	Train train;
 	ResourcesPool resourcePool;
-	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 
 	public TrainThread(Train train, ResourcesPool resource) {
 		System.out.println("Tren creado en la estacion:" + train.getStation().getDescription() + train.isOnGoing());

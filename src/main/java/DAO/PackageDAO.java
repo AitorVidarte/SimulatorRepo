@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.sonarsource.scanner.api.internal.cache.Logger;
+
 import Modelo.Package;
 
 import hibernate.HibernateUtil;
 
 public class PackageDAO {
-	
+	Logger logger;
 	// For adding items in the Package table.
 	public Package add(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
@@ -41,6 +43,7 @@ public class PackageDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			logger.debug("a");
 		}
 		session.getTransaction().commit();
 		session.close();
