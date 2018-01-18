@@ -158,6 +158,7 @@ public class TrainThread extends Thread {
 				Train train = this.getTrain();
 				train.setStation(train.getRail().getNextStation());
 				resourcePool.acutalizarTren(train);
+				resourcePool.despertarTrenesEstacion(train.getStation());
 			}
 		}
 	}
@@ -166,10 +167,15 @@ public class TrainThread extends Thread {
 		
 		for (int i = 0; i <= 100; i += 10) {
 			pidiendoRail();
+			pedirParking();
 			if (i == 90) {
 				pidiendoRail();
 			}
 		}
+	}
+
+	private void pedirParking() {
+		resourcePool.pedirParkingAEstacion(train.getRail().getNextStation());
 	}
 
 	private void pidiendoRail() {

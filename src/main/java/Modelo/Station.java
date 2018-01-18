@@ -162,11 +162,11 @@ public class Station implements Serializable {
 		int pos = 0;
 
 		for (Train tren : parks) {
-			tren.getDirection();
 			pos++;
 		}
 		if (pos == 4) {
 			try {
+				System.out.println("TREN PARADO!!!!! ######################################");
 				wait();
 
 			} catch (InterruptedException e) {
@@ -190,6 +190,11 @@ public class Station implements Serializable {
 	}
 	public void addDeliveredPackageList(Package paquete) {
 		deliveredPackageList.add(paquete);
+		
+	}
+
+	public void despertar() {
+		notify();
 		
 	}
 }

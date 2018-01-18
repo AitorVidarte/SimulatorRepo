@@ -349,4 +349,14 @@ public class ResourcesPool {
 	public void actualizarRail(Rail rail) {
 		railDao.edit(rail);
 	}
+
+	public void pedirParkingAEstacion(Station nextStation) {
+		nextStation.obtenerPaking();
+		
+	}
+
+	public void despertarTrenesEstacion(Station station) {
+		station.despertar();
+		
+	}
 }
