@@ -1,6 +1,6 @@
 package testFuncionality;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,23 +32,19 @@ public class TestResourcesPool {
 		packages = new ArrayList<Package>();
 		initStations();
 		initPackages();
-
+		initPrivateFunctions();
 		
-
-		try {
-			calcularDireccionPaquete = resourcesPool.getClass().getDeclaredMethod("calcularDireccionPaquete",
-					Package.class);
-			distanciaEntreEstaciones = resourcesPool.getClass().getDeclaredMethod("distanciaEntreEstaciones",
-					Station.class, Station.class, int.class);
-
-		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		calcularDireccionPaquete.setAccessible(true);
-		distanciaEntreEstaciones.setAccessible(true);
+		
 	}
 
+	@Test
+	public void testIniciarCircuitoDesdeBBDD() {
+		resourcesPool.iniciarCircuitoDesdeBBDD();
+		assertNotEquals(null, resourcesPool.getTrains().get(0));
+		assertNotEquals(null, resourcesPool.getStations().get(0));
+	}
+	
+	
 	@Test
 	public void testCalcularDireccionPaquete1() {
 		try {
@@ -119,5 +115,19 @@ public class TestResourcesPool {
 	public void initPackages() {
 		packages.add(new Package(stations.get(0), stations.get(2), "Paquete 1"));
 		packages.add(new Package(stations.get(2), stations.get(0), "Paquete 2"));
+	}
+	public void initPrivateFunctions() {
+		try {
+			calcularDireccionPaquete = resourcesPool.getClass().getDeclaredMethod("calcularDireccionPaquete",
+					Package.class);
+			distanciaEntreEstaciones = resourcesPool.getClass().getDeclaredMethod("distanciaEntreEstaciones",
+					Station.class, Station.class, int.class);
+
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		calcularDireccionPaquete.setAccessible(true);
+		distanciaEntreEstaciones.setAccessible(true);
 	}
 }

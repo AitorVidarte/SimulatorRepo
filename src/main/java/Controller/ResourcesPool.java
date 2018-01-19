@@ -463,4 +463,40 @@ public class ResourcesPool {
 			}
 		}
 	}
+
+	/**
+	 * Sets the trains
+	 * @param trains
+	 * the trains
+	 */
+	public void setTrains(List<Train> trains) {
+		this.trains = trains;
+	}
+
+	/**
+	 * Sets the stations
+	 * @param stations
+	 * the stations
+	 */
+	public void setStations(List<Station> stations) {
+		this.stations = stations;
+	}
+	/**
+	 * Gets the stations
+	 * @return
+	 * the stations
+	 */
+	public List<Station> getStations() {
+		return stations;
+	}
+
+	/**
+	 * Sets the packages
+	 * @param packages
+	 * the packages
+	 */
+	public void setPackages(List<Package> packages) {
+		this.packages = packages;
+	}
+	
 }
