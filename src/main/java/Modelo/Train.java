@@ -1,5 +1,13 @@
 package Modelo;
 
+/**
+ * @file Train.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief Train
+ */
+
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,9 +46,6 @@ public class Train implements Serializable {
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Package> packageList;
-//	@OneToMany
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	private Set<Package> historyPackageList;
 	private boolean onGoing;
 
 	public Train() {
@@ -51,7 +56,6 @@ public class Train implements Serializable {
 		this.station = station;
 		this.direction = direction;
 		this.packageList = new HashSet<Package>();
-		//this.historyPackageList = new  HashSet<Package>();
 		this.rail = new Rail();
 	}
 

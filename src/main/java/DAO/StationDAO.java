@@ -1,5 +1,13 @@
 package DAO;
 
+/**
+ * @file StationDAO.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief StationDAO
+ */
+
+
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -10,7 +18,12 @@ import hibernate.HibernateUtil;
 
 public class StationDAO {
 
-	// For adding items in the Package table.
+	/**
+	 * Add the station in the database.
+	 * @param station
+	 * The station
+	 * @return station
+	 */
 	public Station add(Station station) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
@@ -20,19 +33,12 @@ public class StationDAO {
 		return station;
 	}
 
-	// For deleting item from Package table.
-	public Station delete(int id) {
-		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Station stations = (Station) session.load(Station.class, id);
-		if (null != stations) {
-			session.delete(stations);
-		}
-		session.getTransaction().commit();
-		session.close();
-		return stations;
-	}
-
+	/**
+	 * edit the station in the database.
+	 * @param station
+	 * The station
+	 * @return station
+	 */
 	public Station edit(Station station) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
@@ -42,8 +48,10 @@ public class StationDAO {
 		return station;
 	}
 
-	// For generating , executing hibernate select query and returns packages as a
-	// list.
+	/**
+	 * Gets the station list from the database.
+	 * @return stations
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Station> list() {
 		Session session = HibernateUtil.createSessionFactory();

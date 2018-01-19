@@ -1,40 +1,45 @@
 package DAO;
 
+/**
+ * @file PackageDao.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief PackageDAO
+ */
+
 
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import Modelo.Package;
+import org.sonarsource.scanner.api.internal.cache.Logger;
 
+import Modelo.Package;
 import hibernate.HibernateUtil;
 
 public class PackageDAO {
 	
-	// For adding items in the Package table.
+	/**
+	 * Add the package in database.
+	 * @param paquete
+	 * The package
+	 * @return package
+	 */
+	
 	public Package add(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
-		System.out.println(paquete.getDestination().getStationID());
 		session.save(paquete);
 		session.getTransaction().commit();
 		session.close();
 		return paquete;
 	}
 
-	// For deleting item from Package table.
-	public Package delete(int id) {
-		Session session = HibernateUtil.createSessionFactory();
-		session.beginTransaction();
-		Package paquete = session.get(Package.class, id);
-		if (paquete != null) {
-			session.delete(paquete);
-		}
-		session.getTransaction().commit();
-		session.close();
-		return paquete;
-	}
-	
+	/**
+	 * edit the package in database.
+	 * @param paquete
+	 * The package
+	*/
 	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();	
@@ -43,8 +48,10 @@ public class PackageDAO {
 		session.close();
 	}
 	
-	// For generating , executing hibernate select query and returns packages as a
-	// list.
+	/**
+	 * take the packages from database.
+	 * @return  packages
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Package> packageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
@@ -62,6 +69,10 @@ public class PackageDAO {
 		return packages;
 	}
 	
+	/**
+	 * take the send packages from database.
+	 * @return package
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Package> toSendPackageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
@@ -69,7 +80,6 @@ public class PackageDAO {
 		List<Package> packages = null;
 		try {
 			packages =  session.createQuery("from Package where packageState = 3").list();
-
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
