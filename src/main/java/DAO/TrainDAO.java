@@ -24,8 +24,7 @@ public class TrainDAO {
 	/**
 	 * Edit the train in the database.
 	 * @param train
-	 * The train
-	 * @return train
+	 * take one train for update
 	 */
 	public void edit(Train train) {
 		Session session = HibernateUtil.createSessionFactory();

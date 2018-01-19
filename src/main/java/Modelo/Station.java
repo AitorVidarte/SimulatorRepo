@@ -91,6 +91,10 @@ public class Station implements Serializable {
 	 * The nextStation
 	 * @param previousStation
 	 * The previousStation
+	 * @param nextExitSwitch
+	 * switch1
+	 * @param previousExitSwitch
+	 * switch2
 	 */
 	public Station(int stationID, double coordinatesLat, double coordinatesLng, String description, int nextExitSwitch,
 			int previousExitSwitch, int exitSwitch, int entrySwitch, Station nextStation,
@@ -219,7 +223,8 @@ public class Station implements Serializable {
 	/**
 	 * This method is synchronized to check if there are free parking spaces, but to block the train's thread.
 	 * @param resourcePool
-	 * @return
+	 * this parameter is to notify resources pool that wakes up a train
+	 * @return boolean 
 	 */
 	public synchronized boolean obtenerPaking(ResourcesPool resourcePool) {
 		boolean haySitio = true;

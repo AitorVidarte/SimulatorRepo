@@ -39,8 +39,7 @@ public class PackageDAO {
 	 * edit the package in database.
 	 * @param paquete
 	 * The package
-	 * @return package
-	 */
+	*/
 	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();	
@@ -51,9 +50,7 @@ public class PackageDAO {
 	
 	/**
 	 * take the packages from database.
-	 * @param paquete
-	 * The package
-	 * @return package
+	 * @return  packages
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Package> packageListInBBDD() {
@@ -74,8 +71,6 @@ public class PackageDAO {
 	
 	/**
 	 * take the send packages from database.
-	 * @param paquete
-	 * The package
 	 * @return package
 	 */
 	@SuppressWarnings("unchecked")

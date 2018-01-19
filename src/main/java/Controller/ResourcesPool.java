@@ -156,6 +156,7 @@ public class ResourcesPool {
 	 * the corresponding station and is used by the Package Controller
 	 * 
 	 * @param packages
+	 * recive the package list
 	 */
 	public void asignarPaquetesAEstacionesPackageController(List<Package> packages) {
 
@@ -191,6 +192,7 @@ public class ResourcesPool {
 	 * has to pick up the package and is used by the Package Controller.
 	 * 
 	 * @param packages
+	 * recived package list
 	 */
 	public void asignarTrenAPaquetePackageController(List<Package> packages) {
 		int elMejor = 6, distancia, dir = 0;
@@ -408,6 +410,7 @@ public class ResourcesPool {
 	 * This method update package in data base.
 	 * 
 	 * @param paquete
+	 * get a package
 	 */
 	public void actualizarPaquete(Package paquete) {
 		packageDao.edit(paquete);
@@ -417,6 +420,7 @@ public class ResourcesPool {
 	 * This method update train in data base.
 	 * 
 	 * @param train
+	 * get train to update it.
 	 */
 	public void acutalizarTren(Train train) {
 		trainDao.edit(train);
@@ -426,6 +430,7 @@ public class ResourcesPool {
 	 * This method update station in data base.
 	 * 
 	 * @param station
+	 * get the station parameter
 	 */
 	public void acutalizarEstacion(Station station) {
 		stationDao.edit(station);
@@ -435,6 +440,7 @@ public class ResourcesPool {
 	 * This method update rail in data base.
 	 * 
 	 * @param rail
+	 * get the rail parameter
 	 */
 	public void actualizarRail(Rail rail) {
 		railDao.edit(rail);
@@ -445,6 +451,7 @@ public class ResourcesPool {
 	 * to enter a station and the station is full.
 	 * 
 	 * @param station
+	 * get station
 	 */
 	public void moverTrenesParados(Station station) {
 		boolean movido = false;
