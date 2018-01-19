@@ -24,7 +24,9 @@ public class TrainThread extends Thread {
 	/**
 	 * TrainThread constructor.
 	 * @param train
+	 * recive train
 	 * @param resource
+	 * recive resource
 	 */
 	
 	public TrainThread(Train train, ResourcesPool resource) {
@@ -268,8 +270,7 @@ public class TrainThread extends Thread {
 	}
 	/**
 	 * This method returns train of TrainThread.
-	 * @return
-	 * 
+	 * @return return train
 	 */
 	public Train getTrain() {
 		return train;

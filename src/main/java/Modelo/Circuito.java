@@ -31,7 +31,7 @@ public class Circuito {
 
 	/**
 	 * This method return rails
-	 * @return
+	 * @return rails
 	 */
 	public List<Rail> getRailes() {
 		return railes;
@@ -48,7 +48,8 @@ public class Circuito {
 	/**
 	 * This method acts as a monitor, if the rail that wants the train is occupied the train will be blocked.
 	 * @param rail
-	 * @return
+	 * take one rail
+	 * @return rail
 	 */
 
 	public synchronized Rail cogerRail(Rail rail) {
@@ -65,6 +66,7 @@ public class Circuito {
 	/**
 	 * This method frees the rail and warns blocked trains.
 	 * @param rail
+	 * get rail
 	 */
 	public synchronized void soltarRail(Rail rail) {
 		rail.setOccupied(false);
@@ -72,7 +74,8 @@ public class Circuito {
 	}
 	/**
 	 * this method return station list
-	 * @return
+	 * @return 
+	 * return list of stations
 	 */
 	public List<Station> getEstaciones(){
 		return estaciones;
@@ -90,8 +93,11 @@ public class Circuito {
 	/**
 	 * 
 	 * @param index
+	 * this parameter is to look at a specific station
 	 * @param using
+	 * this parameter is to know if you are going to use station o deliver
 	 * @return
+	 * this method return one station if is free
 	 */
 	public synchronized Station reservarEstacion(int index,boolean using) {
 		
@@ -111,6 +117,7 @@ public class Circuito {
 	/**
 	 * This method checks if there is any train using the packets of a station, if there is any modifying the data it blocks the train.
 	 * @param index
+	 * this parameter is to deliver a station.
 	 */
 	public synchronized void despertarTrenes(int index) {
 		usingStations[index] = false;
