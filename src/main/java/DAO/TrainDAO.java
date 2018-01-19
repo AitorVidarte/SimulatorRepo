@@ -1,5 +1,13 @@
 package DAO;
 
+/**
+ * @file TrainDAO.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief TrainDAO
+ */
+
+
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -13,6 +21,12 @@ import hibernate.HibernateUtil;
 public class TrainDAO {
 	SessionFactory sessionFactory;
 
+	/**
+	 * Edit the train in the database.
+	 * @param train
+	 * The train
+	 * @return train
+	 */
 	public void edit(Train train) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
@@ -21,8 +35,10 @@ public class TrainDAO {
 		session.close();
 	}
 	
-	// For generating , executing hibernate select query and returns trains as a
-	// list.
+	/**
+	 * Gets the train list from the database.
+	 * @return trains
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Train> list() {
 		//Session session = HibernateUtil.createSessionFactory();

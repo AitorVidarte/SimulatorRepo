@@ -1,5 +1,13 @@
 package Modelo;
 
+/**
+ * @file Train.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief Train
+ */
+
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
