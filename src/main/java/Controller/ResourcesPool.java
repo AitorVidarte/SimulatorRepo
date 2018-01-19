@@ -498,5 +498,13 @@ public class ResourcesPool {
 	public void setPackages(List<Package> packages) {
 		this.packages = packages;
 	}
+	/**
+	 * Sets Circuito
+	 * @param circuito
+	 * the circuit
+	 */
+	public void setCircuito(Circuito circuito) {
+		this.circuito = circuito;
+	}
 	
 }

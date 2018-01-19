@@ -20,9 +20,8 @@ public class TestResourcesPool {
 	ArrayList<Train> trains;
 
 	
-	Package paquete1, paquete2;
 	ResourcesPool resourcesPool;
-	Method calcularDireccionPaquete, distanciaEntreEstaciones;
+	Method calcularDireccionPaquete, distanciaEntreEstaciones, asignarPaquetesAEstaciones;
 
 	@Before
 	public void setUp() {
@@ -44,6 +43,18 @@ public class TestResourcesPool {
 		assertNotEquals(null, resourcesPool.getStations().get(0));
 	}
 	
+	@Test
+	public void testAsignarPaquetesAEstaciones() {
+		resourcesPool.setStations(stations);
+		resourcesPool.setPackages(packages);
+		try {
+			asignarPaquetesAEstaciones.invoke(resourcesPool);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNotEquals(0, resourcesPool.getStations().get(0).getSendPackageList().size());
+	}
 	
 	@Test
 	public void testCalcularDireccionPaquete1() {
@@ -115,6 +126,17 @@ public class TestResourcesPool {
 	public void initPackages() {
 		packages.add(new Package(stations.get(0), stations.get(2), "Paquete 1"));
 		packages.add(new Package(stations.get(2), stations.get(0), "Paquete 2"));
+//		packages.add(new Package(stations.get(1), stations.get(3), "Paquete 3"));
+//		packages.add(new Package(stations.get(5), stations.get(0), "Paquete 4"));
+//		packages.add(new Package(stations.get(3), stations.get(0), "Paquete 5"));
+//		packages.add(new Package(stations.get(4), stations.get(1), "Paquete 6"));
+		
+		packages.get(0).setPackageState(0);
+		packages.get(1).setPackageState(2);
+//		packages.get(2).setPackageState(2);
+//		packages.get(3).setPackageState(0);
+//		packages.get(4).setPackageState(0);
+//		packages.get(5).setPackageState(2);
 	}
 	public void initPrivateFunctions() {
 		try {
@@ -122,6 +144,7 @@ public class TestResourcesPool {
 					Package.class);
 			distanciaEntreEstaciones = resourcesPool.getClass().getDeclaredMethod("distanciaEntreEstaciones",
 					Station.class, Station.class, int.class);
+			asignarPaquetesAEstaciones = resourcesPool.getClass().getDeclaredMethod("asignarPaquetesAEstaciones");
 
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
@@ -129,5 +152,6 @@ public class TestResourcesPool {
 		}
 		calcularDireccionPaquete.setAccessible(true);
 		distanciaEntreEstaciones.setAccessible(true);
+		asignarPaquetesAEstaciones.setAccessible(true);
 	}
 }
