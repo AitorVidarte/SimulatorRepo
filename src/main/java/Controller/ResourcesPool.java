@@ -55,7 +55,6 @@ public class ResourcesPool {
 		this.stations = stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
 		this.trains = trainDao.list();
-		this.rails = railDao.list();
 
 		for (Station station : stations) {
 			for (Train train : trains) {

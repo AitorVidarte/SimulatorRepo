@@ -22,11 +22,10 @@ public class Circuito {
 
 	public void setRailes(List<Rail> rails) {
 		this.railes = rails;
-	}
+	} 
 
 	public synchronized Rail cogerRail(Rail rail) {
 		while (rail.isOccupied()) {
-			
 			try {
 				wait();
 			} catch (InterruptedException e) {

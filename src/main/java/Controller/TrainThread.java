@@ -182,7 +182,7 @@ public class TrainThread extends Thread {
 	private void pidiendoRail() {
 		try {
 
-			Thread.sleep(2000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 		}
 	}

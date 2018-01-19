@@ -14,7 +14,7 @@
 		<property name="hibernate.connection.username">mysqladmin</property>
 		<property name="hibernate.connection.password">mysqladmin</property>
 
-		<property name="hibernate.connection.pool_size">100</property>
+		<property name="hibernate.connection.pool_size">1</property>
 
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 
