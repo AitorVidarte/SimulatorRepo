@@ -14,7 +14,7 @@ public class TrainThread extends Thread {
 	public TrainThread(Train train, ResourcesPool resource) {
 		this.train = train;
 		this.resourcePool = resource;
-		
+
 	}
 
 	public void run() {
@@ -24,14 +24,12 @@ public class TrainThread extends Thread {
 			if (moverse()) {
 				recogerPaquete();
 				entregarPaquete();
+				pedirRail();
+				salirEstacion();
+				recorreRail();
+				entrarEstacion();
+				soltarRail();
 				comprobarSiTieneQueParar();
-				if (moverse()) {
-					pedirRail();
-					salirEstacion();
-					recorreRail();
-					entrarEstacion();
-					soltarRail();
-				}
 			} else {
 				comprobarEstaciones();
 				descansar();
@@ -145,9 +143,10 @@ public class TrainThread extends Thread {
 		for (Station station : resourcePool.getCircuito().getEstaciones()) {
 
 			if (station.getStationID() == train.getTrainID()) {
+				train.getStation().despertarTren();
 				station.quitarTren(train);
 				resourcePool.acutalizarTren(train);
-				}
+			}
 		}
 	}
 
@@ -158,29 +157,31 @@ public class TrainThread extends Thread {
 				Train train = this.getTrain();
 				train.setStation(train.getRail().getNextStation());
 				resourcePool.acutalizarTren(train);
-				resourcePool.despertarTrenesEstacion(train.getStation());
 			}
 		}
 	}
 
 	private void recorreRail() {
-		
+
 		for (int i = 0; i <= 100; i += 10) {
 			pidiendoRail();
-			pedirParking();
+
 			if (i == 90) {
+
+				pedirParking();
 				pidiendoRail();
 			}
 		}
 	}
 
 	private void pedirParking() {
-		resourcePool.pedirParkingAEstacion(train.getRail().getNextStation());
+		int index = resourcePool.getCircuito().getEstaciones().indexOf(train.getRail().getNextStation());
+		resourcePool.getCircuito().getEstaciones().get(index).obtenerPaking(resourcePool);
 	}
 
 	private void pidiendoRail() {
 		try {
-			
+
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 		}

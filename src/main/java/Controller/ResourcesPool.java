@@ -37,6 +37,9 @@ public class ResourcesPool {
 	PackageDAO packageDao = new PackageDAO();
 	Logger logger;
 	
+	
+	boolean blockedThread[] = {false,false,false,false,false,false};
+	
 	public ResourcesPool() {
 		stations = new ArrayList<Station>();
 		trains = new ArrayList<Train>();
@@ -52,6 +55,7 @@ public class ResourcesPool {
 		this.stations = stationDao.list();
 		this.packages = packageDao.packageListInBBDD();
 		this.trains = trainDao.list();
+		this.rails = railDao.list();
 
 		for (Station station : stations) {
 			for (Train train : trains) {
@@ -62,6 +66,7 @@ public class ResourcesPool {
 				}
 			}
 		}
+		
 
 		rails.add(new Rail(1,stations.get(0),stations.get(1),false));
 		rails.add(new Rail(2,stations.get(1),stations.get(2),false));
@@ -350,13 +355,31 @@ public class ResourcesPool {
 		railDao.edit(rail);
 	}
 
-	public void pedirParkingAEstacion(Station nextStation) {
-		nextStation.obtenerPaking();
-		
-	}
+//	public synchronized void pedirParkingAEstacion(TrainThread trainThread) {
+//		
+//		
+//		if (!trainThread.getTrain().getRail().getNextStation().obtenerPaking()) {
+//			try {
+//				System.out.println("TrenBloqueado!!!");
+//				System.out.println(trainThreads.indexOf(trainThread));
+//				blockedThread[trainThreads.indexOf(trainThread)] = true;
+//				wait();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
-	public void despertarTrenesEstacion(Station station) {
-		station.despertar();
-		
+	public void moverTrenesParados(Station station) {
+		boolean movido = false;
+		for (TrainThread traTh: trainThreads) {
+			if((traTh.getTrain().getStation().getStationID() == station.getStationID()) && !movido)
+			{
+				traTh.getTrain().setOnGoing(true);
+				trainDao.edit(traTh.getTrain());
+				movido = true;
+			}
+		}
 	}
 }

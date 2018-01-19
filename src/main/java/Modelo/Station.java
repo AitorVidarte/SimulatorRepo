@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+
+import Controller.ResourcesPool;
 import Modelo.Train;
 
 @SuppressWarnings("serial")
@@ -156,24 +158,25 @@ public class Station implements Serializable {
 		this.deliveredPackageList = deliveredPackageList;
 	}
 	
-	//CAMBIAR ESTA MIERDA!!
-	public synchronized int obtenerPaking() {
-
-		int pos = 0;
-
-		for (Train tren : parks) {
-			pos++;
-		}
-		if (pos == 4) {
+	public synchronized boolean obtenerPaking(ResourcesPool resourcePool) {
+		boolean haySitio = true;
+		if (parks.size() == 4) {
 			try {
-				System.out.println("TREN PARADO!!!!! ######################################");
+				System.out.println("######### tren bloqueado!!!");
+				resourcePool.moverTrenesParados(this);
 				wait();
-
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			haySitio=false;
 		}
-		return pos;
+		
+		return haySitio;
+	}
+	
+	public synchronized void despertarTren() {
+		notify();
 	}
 
 	public void aparcarTren(Train train) {
@@ -190,11 +193,6 @@ public class Station implements Serializable {
 	}
 	public void addDeliveredPackageList(Package paquete) {
 		deliveredPackageList.add(paquete);
-		
-	}
-
-	public void despertar() {
-		notify();
 		
 	}
 }

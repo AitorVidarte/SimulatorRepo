@@ -7,6 +7,7 @@ public class Circuito {
 
 	List<Rail> railes;
 	List<Station> estaciones;
+
 	
 	static boolean usingStations[]= {false,false,false,false,false,false};
 
