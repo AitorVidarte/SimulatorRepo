@@ -1,5 +1,13 @@
 package Controller;
 
+/**
+ * @file TrainThread.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief Train Thread
+ */
+
+
 import java.util.Iterator;
 import Modelo.Rail;
 import Modelo.Station;
@@ -8,15 +16,27 @@ import Modelo.Package;
 
 public class TrainThread extends Thread {
 
+	/** train */
 	Train train;
+	/** resourcePool */
 	ResourcesPool resourcePool;
 
+	/**
+	 * TrainThread constructor.
+	 * @param train
+	 * @param resource
+	 */
+	
 	public TrainThread(Train train, ResourcesPool resource) {
 		this.train = train;
 		this.resourcePool = resource;
 
 	}
 
+	/**
+	 * The thread runnable function. This thread is always doing the thread methods.
+	 */
+	
 	public void run() {
 
 		while (true) {
@@ -37,7 +57,10 @@ public class TrainThread extends Thread {
 
 		}
 	}
-
+	
+	/**
+	 * This method is used to sleep the thread.
+	 */
 	private void descansar() {
 		try {
 			Thread.sleep(5000);
@@ -45,7 +68,9 @@ public class TrainThread extends Thread {
 		}
 
 	}
-
+	/**
+	 * This method is used to check if a package has arrived at any station.
+	 */
 	private void comprobarEstaciones() {
 
 		for (Station station : resourcePool.getCircuito().getEstaciones()) {
@@ -57,7 +82,9 @@ public class TrainThread extends Thread {
 		}
 
 	}
-
+	/**
+	 * This method checks if the train has to stop.
+	 */
 	private void comprobarSiTieneQueParar() {
 
 		if (train.paquetesEntregados() && tengoPaquetesPorRecoger()) {
@@ -66,7 +93,12 @@ public class TrainThread extends Thread {
 		}
 
 	}
-
+	
+	/**
+	 * This method checks if the train has to pick up a package.
+	 * @return
+	 * return stop.
+	 */
 	private boolean tengoPaquetesPorRecoger() {
 		boolean parar = true;
 		for (Station station : resourcePool.getCircuito().getEstaciones()) {
@@ -78,7 +110,9 @@ public class TrainThread extends Thread {
 		}
 		return parar;
 	}
-
+   /**
+    * This method is used for a train to pick up the packages of a station.
+    */
 	private void recogerPaquete() {
 		Station stations = resourcePool.getCircuito().reservarEstacion(train.getStation().getStationID() - 1, true);
 		Iterator<Package> itStationPackages = stations.getSendPackageList().iterator();
@@ -98,7 +132,9 @@ public class TrainThread extends Thread {
 		}
 		resourcePool.getCircuito().despertarTrenes(train.getStation().getStationID() - 1);
 	}
-
+	  /**
+	    * This method is used for a train to deliver the packages of a station.
+	    */
 	private void entregarPaquete() {
 
 		Iterator<Package> itTrainPackages = train.getPackageList().iterator();
@@ -115,7 +151,9 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * This method is used for the train to ask for a rail.
+	 */
 	private void pedirRail() {
 
 		for (Rail rail : resourcePool.getCircuito().getRailes()) {
@@ -137,7 +175,9 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * This method is used to leave a station and the train warns trains that you may be blocked.
+	 */
 	private void salirEstacion() {
 
 		for (Station station : resourcePool.getCircuito().getEstaciones()) {
@@ -149,7 +189,9 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * This method is used for the train to enter a station.
+	 */
 	private void entrarEstacion() {
 		for (Station station : resourcePool.getCircuito().getEstaciones()) {
 			if (station.getStationID() == train.getTrainID()) {
@@ -160,7 +202,9 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * This method is used for the train to travel the rail and ask for a parking to the next station.
+	 */
 	private void recorreRail() {
 
 		for (int i = 0; i <= 100; i += 10) {
@@ -173,12 +217,17 @@ public class TrainThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * This method is used for the train to request a parking to the next station in case the station is full the train will be blocked.
+	 */
 	private void pedirParking() {
 		int index = resourcePool.getCircuito().getEstaciones().indexOf(train.getRail().getNextStation());
 		resourcePool.getCircuito().getEstaciones().get(index).obtenerPaking(resourcePool);
 	}
 
+	/**
+	 * This method is used to simulate the thread movement.
+	 */
 	private void pidiendoRail() {
 		try {
 
@@ -186,7 +235,9 @@ public class TrainThread extends Thread {
 		} catch (InterruptedException e) {
 		}
 	}
-
+	/**
+	 * This method is used to drop a rail and notify trains that you may be blocked.
+	 */
 	private void soltarRail() {
 		Rail rail = train.getRail();
 		resourcePool.getCircuito().soltarRail(rail);
@@ -196,6 +247,11 @@ public class TrainThread extends Thread {
 
 	}
 
+	/**
+	 * This method is used to check if a train has to move.
+	 * @return
+	 * return true or false
+	 */
 	private boolean moverse() {
 		boolean go = false;
 		if (train.isOnGoing()) {
@@ -203,12 +259,13 @@ public class TrainThread extends Thread {
 		}
 		return go;
 	}
-
+	/**
+	 * This method returns train of TrainThread.
+	 * @return
+	 * 
+	 */
 	public Train getTrain() {
 		return train;
 	}
 
-	public void setTrain(Train train) {
-		this.train = train;
-	}
 }

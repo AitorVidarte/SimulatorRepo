@@ -1,5 +1,12 @@
 package DAO;
 
+/**
+ * @file PackageDao.java
+ * @author Aitor,Xanti and Alex
+ * @date 3/12/2017
+ * @brief PackageDAO
+ */
+
 
 import java.util.List;
 
@@ -11,8 +18,14 @@ import Modelo.Package;
 import hibernate.HibernateUtil;
 
 public class PackageDAO {
-	Logger logger;
-	// For adding items in the Package table.
+	
+	/**
+	 * Add the package in database.
+	 * @param paquete
+	 * The package
+	 * @return package
+	 */
+	
 	public Package add(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();
@@ -22,7 +35,12 @@ public class PackageDAO {
 		return paquete;
 	}
 
-
+	/**
+	 * edit the package in database.
+	 * @param paquete
+	 * The package
+	 * @return package
+	 */
 	public void edit(Package paquete) {
 		Session session = HibernateUtil.createSessionFactory();
 		session.beginTransaction();	
@@ -31,6 +49,12 @@ public class PackageDAO {
 		session.close();
 	}
 	
+	/**
+	 * take the packages from database.
+	 * @param paquete
+	 * The package
+	 * @return package
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Package> packageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
@@ -42,13 +66,18 @@ public class PackageDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
-			logger.debug("a");
 		}
 		session.getTransaction().commit();
 		session.close();
 		return packages;
 	}
 	
+	/**
+	 * take the send packages from database.
+	 * @param paquete
+	 * The package
+	 * @return package
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Package> toSendPackageListInBBDD() {
 		Session session = HibernateUtil.createSessionFactory();
